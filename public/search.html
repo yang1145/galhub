@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>搜索游戏 - GalHub</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/search.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>GalHub 游戏搜索</h1>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="/">首页</a></li>
+                        <li><a href="/search" class="active">搜索</a></li>
+                        <!-- 管理员入口已移除 -->
+                        <li><a href="#">关于</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="输入游戏名称或别名进行搜索...">
+                <button id="searchButton">搜索</button>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            <div class="games-container" id="gamesContainer">
+                <!-- 游戏将通过JavaScript动态加载 -->
+                <div class="loading-placeholder">请输入关键词进行搜索</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="container">
+                <p>&copy; 2025 GalHub 游戏展示平台. All rights reserved.</p>
+                <p>一个专注于游戏展示的平台</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/search.js"></script>
+</body>
+</html>

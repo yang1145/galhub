@@ -1,0 +1,98 @@
+/* 搜索页面专用样式 */
+
+/* 搜索框容器 */
+.search-box {
+    margin: 1rem auto 2rem;
+    max-width: 600px;
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* 搜索输入框 */
+#searchInput {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: 2px solid #bbdefb; /* 浅蓝色边框 */
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    background-color: #ffffff;
+    color: #0d47a1; /* 深蓝色文字 */
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: #64b5f6; /* 浅蓝色边框 */
+    box-shadow: 0 0 0 2px rgba(100, 181, 246, 0.2);
+}
+
+/* 搜索按钮 */
+#searchButton {
+    padding: 0.8rem 1.5rem;
+    background-color: #64b5f6; /* 浅蓝色 */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#searchButton:hover {
+    background-color: #42a5f5; /* 稍深的蓝色 */
+}
+
+/* 返回链接 */
+.back-link {
+    margin-top: 1rem;
+}
+
+.back-link a {
+    color: #0d47a1; /* 深蓝色文字 */
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+}
+
+/* 搜索结果标题 */
+.search-results-title {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #546e7a;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .search-box {
+        max-width: 100%;
+        padding: 0 1rem;
+    }
+    
+    #searchInput {
+        padding: 0.7rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    #searchButton {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .search-box {
+        flex-direction: column;
+        margin: 1rem auto;
+    }
+}

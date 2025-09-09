@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员登录 - GalHub</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .captcha-container {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .captcha-container input {
+            flex: 1;
+        }
+        
+        .captcha-image {
+            height: 38px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .back-link a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <form class="login-form" id="loginForm">
+            <h2>管理员登录</h2>
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="captcha">验证码</label>
+                <div class="captcha-container">
+                    <input type="text" id="captcha" name="captcha" required maxlength="4">
+                    <img id="captchaImage" class="captcha-image" src="" alt="验证码" title="点击刷新验证码">
+                </div>
+                <input type="hidden" id="captchaId" name="captchaId">
+            </div>
+            <button type="submit" class="btn">登录</button>
+            <div class="error-message" id="errorMessage"></div>
+        </form>
+        <div class="back-link">
+            <a href="/">返回首页</a>
+        </div>
+    </div>
+
+    <script>
+        let currentCaptchaId = null;
+        
+        // 页面加载完成后获取验证码
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshCaptcha();
+            
+            // 绑定刷新验证码事件
+            document.getElementById('captchaImage').addEventListener('click', refreshCaptcha);
+            
+            // 绑定表单提交事件
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+        });
+        
+        // 刷新验证码
+        async function refreshCaptcha() {
+            try {
+                const response = await fetch('/api/captcha');
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('captchaImage').src = 'data:image/svg+xml;utf8,' + encodeURIComponent(data.svg);
+                    currentCaptchaId = data.captchaId;
+                    document.getElementById('captchaId').value = currentCaptchaId;
+                } else {
+                    showError('获取验证码失败');
+                }
+            } catch (error) {
+                console.error('Error fetching captcha:', error);
+                showError('获取验证码时发生错误');
+            }
+        }
+        
+        // 处理登录
+        async function handleLogin(event) {
+            console.log('开始处理登录');
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const captcha = document.getElementById('captcha').value;
+            
+            // 简单验证
+            if (!username || !password || !captcha) {
+                showError('请填写所有字段');
+                return;
+            }
+            
+            try {
+                console.log('发送登录请求');
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username,
+                        password,
+                        captcha,
+                        captchaId: currentCaptchaId
+                    })
+                });
+                
+                console.log('收到登录响应，状态码:', response.status);
+                const data = await response.json();
+                console.log('登录响应:', data);
+                
+                if (response.ok && data.success) {
+                    // 登录成功，存储JWT令牌
+                    console.log('登录成功，存储令牌:', data.token);
+                    localStorage.setItem('adminToken', data.token);
+                    // 验证令牌是否正确存储
+                    const storedToken = localStorage.getItem('adminToken');
+                    console.log('验证存储的令牌:', storedToken);
+                    
+                    // 使用更可靠的跳转方式
+                    console.log('登录成功，跳转到管理面板');
+                    window.location.href = '/admin/dashboard';
+                } else {
+                    // 登录失败，显示错误信息并刷新验证码
+                    console.log('登录失败:', data.message);
+                    showError(data.message || '登录失败');
+                    refreshCaptcha();
+                    document.getElementById('captcha').value = '';
+                }
+            } catch (error) {
+                console.error('登录时发生错误:', error);
+                showError('登录时发生错误');
+                refreshCaptcha();
+            }
+        }
+        
+        // 显示错误信息
+        function showError(message) {
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                errorElement.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

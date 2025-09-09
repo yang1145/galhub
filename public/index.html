@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GalHub - 游戏展示平台</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>GalHub 游戏展示平台</h1>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="/" class="active">首页</a></li>
+                        <li><a href="/search">搜索</a></li>
+                        <!-- 管理员入口已移除，仅在搜索页保留 -->
+                        <li><a href="#">关于</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            <div class="games-container" id="gamesContainer">
+                <!-- 游戏将通过JavaScript动态加载 -->
+                <div class="loading-placeholder">加载中...</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="container">
+                <p>&copy; 2025 GalHub 游戏展示平台. All rights reserved.</p>
+                <p>一个专注于游戏展示的平台</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>
