@@ -88,20 +88,43 @@ app.use('/api/games', gameRoutes);
 // 全局错误处理中间件
 app.use((err, req, res, next) => {
   console.error('未处理的错误:', err);
+  console.error('错误堆栈:', err.stack);
+  console.error('请求URL:', req.url);
+  console.error('请求方法:', req.method);
+  console.error('请求头:', req.headers);
+  
   if (req.headers.accept && req.headers.accept.includes('application/json')) {
-    res.status(500).json({ success: false, message: '服务器内部错误' });
+    res.status(500).json({ 
+      success: false, 
+      message: '服务器内部错误',
+      ...(process.env.NODE_ENV === 'development' ? { 
+        error: err.message,
+        stack: err.stack 
+      } : {})
+    });
   } else {
-    res.status(500).send('服务器内部错误');
+    res.status(500).send(`
+      <h1>服务器内部错误</h1>
+      <p>发生了一个未处理的错误，请稍后再试。</p>
+      ${process.env.NODE_ENV === 'development' ? `<pre>${err.message}\n${err.stack}</pre>` : ''}
+    `);
   }
 });
 
 // 404处理
 app.use((req, res) => {
   console.log(`404 Not Found: ${req.method} ${req.url}`);
+  console.log(`User Agent: ${req.get('User-Agent')}`);
+  console.log(`IP: ${req.ip}`);
+  
   if (req.headers.accept && req.headers.accept.includes('application/json')) {
     res.status(404).json({ success: false, message: '请求的资源不存在' });
   } else {
-    res.status(404).send('页面未找到');
+    res.status(404).send(`
+      <h1>页面未找到</h1>
+      <p>请求的资源不存在: ${req.url}</p>
+      <a href="/">返回首页</a>
+    `);
   }
 });
 
