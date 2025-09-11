@@ -16,11 +16,15 @@ const db = new sqlite3.Database(dbPath, (err) => {
     console.error('Error opening database:', err.message);
   } else {
     console.log('Connected to the SQLite user database.');
+    initializeDatabase();
   }
 });
 
-// 初始化用户数据库
-const initUserDb = () => {
+// 初始化数据库
+let dbInitialized = false;
+const initializeDatabase = () => {
+  if (dbInitialized) return Promise.resolve();
+  
   return new Promise((resolve, reject) => {
     db.serialize(() => {
       // 创建用户表
@@ -36,11 +40,54 @@ const initUserDb = () => {
           reject(err);
         } else {
           console.log('Users table created or already exists.');
+        }
+      });
+      
+      // 创建游戏表（解决外键依赖）
+      db.run(`CREATE TABLE IF NOT EXISTS games (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        description TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )`, (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          console.log('Games table created or already exists.');
+        }
+      });
+      
+      // 创建用户游戏历史表
+      db.run(`CREATE TABLE IF NOT EXISTS user_game_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        game_id INTEGER NOT NULL,
+        played_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+        FOREIGN KEY (game_id) REFERENCES games (id) ON DELETE CASCADE,
+        UNIQUE(user_id, game_id)
+      )`, (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          console.log('User game history table created or already exists.');
+          dbInitialized = true;
           resolve();
         }
       });
     });
   });
+};
+
+// 修改initUserDb函数，使用async/await
+const initUserDb = async () => {
+  try {
+    await initializeDatabase();
+    return { success: true };
+  } catch (err) {
+    console.error('Database initialization failed:', err);
+    return { success: false, error: err };
+  }
 };
 
 // 用户注册
@@ -128,14 +175,69 @@ const findUserByEmail = (email) => {
   });
 };
 
-// 获取所有用户
-const getAllUsers = () => {
+// 记录用户玩游戏历史
+const recordGamePlay = (userId, gameId) => {
   return new Promise((resolve, reject) => {
-    db.all('SELECT id, username, email, created_at, is_active FROM users', [], (err, rows) => {
+    // 首先检查游戏是否存在且处于维护状态
+    db.get("SELECT id FROM games WHERE id = ? AND is_maintained = 1", [gameId], (err, row) => {
+      if (err) {
+        reject(err);
+      } else if (!row) {
+        reject(new Error('Game not found or not maintained'));
+      } else {
+        // 游戏存在，记录游戏历史
+        db.run(
+          `INSERT OR REPLACE INTO user_game_history (user_id, game_id, played_at) 
+           VALUES (?, ?, datetime('now'))`,
+          [userId, gameId],
+          function (err) {
+            if (err) {
+              reject(err);
+            } else {
+              resolve({ userId, gameId, playedAt: new Date() });
+            }
+          }
+        );
+      }
+    });
+  });
+};
+
+// 获取用户游戏历史
+const getUserGameHistory = (userId) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT g.*, ugh.played_at
+      FROM user_game_history ugh
+      JOIN games g ON ugh.game_id = g.id
+      WHERE ugh.user_id = ? AND g.is_maintained = 1
+      ORDER BY ugh.played_at DESC
+    `;
+    
+    db.all(sql, [userId], (err, rows) => {
       if (err) {
         reject(err);
       } else {
         resolve(rows);
+      }
+    });
+  });
+};
+
+// 获取用户玩过的游戏数量
+const getUserGameCount = (userId) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT COUNT(*) as count
+      FROM user_game_history
+      WHERE user_id = ?
+    `;
+    
+    db.get(sql, [userId], (err, row) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(row ? row.count : 0);
       }
     });
   });
@@ -158,6 +260,8 @@ module.exports = {
   validateUser,
   findUserByUsername,
   findUserByEmail,
-  getAllUsers,
+  recordGamePlay,
+  getUserGameHistory,
+  getUserGameCount,
   closeUserDb
 };

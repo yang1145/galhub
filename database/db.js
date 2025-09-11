@@ -1,7 +1,14 @@
-const sqlite3 = require('sqlite3').verbose();
+ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const dbPath = path.join(__dirname, 'games.db');
 const bcrypt = require('bcryptjs');
+const fs = require('fs');
+
+// 确保database目录存在
+const dbDir = path.dirname(dbPath);
+if (!fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir, { recursive: true });
+}
 
 // 创建数据库连接
 const db = new sqlite3.Database(dbPath, (err) => {
@@ -47,7 +54,34 @@ const initDb = () => {
           reject(err);
         } else {
           console.log('Admins table created or already exists.');
-          resolve();
+          
+          // 检查是否已存在默认管理员账户
+          db.get("SELECT COUNT(*) as count FROM admins", [], (err, row) => {
+            if (err) {
+              reject(err);
+            } else if (row.count === 0) {
+              // 创建默认管理员账户 (admin/admin123)
+              bcrypt.hash('admin123', 10, (err, hash) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  db.run("INSERT INTO admins (username, password_hash) VALUES (?, ?)", 
+                    ['admin', hash], 
+                    (err) => {
+                      if (err) {
+                        reject(err);
+                      } else {
+                        console.log('Default admin account created (admin/admin123)');
+                        resolve();
+                      }
+                    }
+                  );
+                }
+              });
+            } else {
+              resolve();
+            }
+          });
         }
       });
     });
@@ -212,29 +246,41 @@ const getAllAdmins = () => {
 };
 
 // 删除管理员账户
-const deleteAdmin = (id) => {
+const deleteAdmin = (id, currentAdminId) => {
   return new Promise((resolve, reject) => {
+    // 防止管理员删除自己的账户
+    if (id == currentAdminId) {
+      reject(new Error('不能删除当前登录的账户'));
+      return;
+    }
+    
     const sql = 'DELETE FROM admins WHERE id = ?';
     db.run(sql, [id], function(err) {
       if (err) {
         reject(err);
       } else {
-        resolve({ changes: this.changes });
+        // 检查是否有行被删除
+        if (this.changes === 0) {
+          reject(new Error('未找到指定的管理员账户'));
+        } else {
+          resolve({ changes: this.changes });
+        }
       }
     });
   });
 };
 
 const initSampleData = () => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      // 检查是否已有数据
-      const count = await new Promise((resolve, reject) => {
-        db.get('SELECT COUNT(*) as count FROM games', (err, row) => {
-          if (err) reject(err);
-          else resolve(row.count);
-        });
-      });
+  return new Promise((resolve, reject) => {
+    // 检查是否已有数据
+    db.get('SELECT COUNT(*) as count FROM games', (err, row) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      const count = row.count;
+      console.log(`当前游戏数量: ${count}`);
 
       if (count > 0) {
         console.log('Sample data already exists.');
@@ -273,37 +319,52 @@ const initSampleData = () => {
         }
       ];
 
+      let completed = 0;
+      let hasError = false;
+
       const insertSql = `INSERT INTO games 
         (name, alias, cover_link, game_address, author, is_commercial, is_repost, is_maintained) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
-      db.serialize(() => {
-        sampleGames.forEach(game => {
-          const params = [
-            game.name,
-            game.alias,
-            game.cover_link,
-            game.game_address,
-            game.author,
-            game.is_commercial ? 1 : 0,
-            game.is_repost ? 1 : 0,
-            1 // is_maintained 默认为 true
-          ];
-          
-          db.run(insertSql, params, (err) => {
-            if (err) {
-              reject(err);
-              return;
-            }
-          });
-        });
-        
-        console.log(`${sampleGames.length} sample games inserted successfully.`);
+      if (sampleGames.length === 0) {
+        console.log('No sample games to insert.');
         resolve();
+        return;
+      }
+
+      sampleGames.forEach(game => {
+        if (hasError) return;
+
+        const params = [
+          game.name,
+          game.alias,
+          game.cover_link,
+          game.game_address,
+          game.author,
+          game.is_commercial ? 1 : 0,
+          game.is_repost ? 1 : 0,
+          1 // is_maintained 默认为 true
+        ];
+        
+        db.run(insertSql, params, (err) => {
+          if (err) {
+            if (!hasError) {
+              hasError = true;
+              reject(err);
+            }
+            return;
+          }
+          
+          completed++;
+          console.log(`Inserted game: ${game.name}`);
+          
+          if (completed === sampleGames.length) {
+            console.log(`${sampleGames.length} sample games inserted successfully.`);
+            resolve();
+          }
+        });
       });
-    } catch (err) {
-      reject(err);
-    }
+    });
   });
 };
 

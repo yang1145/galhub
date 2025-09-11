@@ -308,10 +308,10 @@
         <!-- 导航栏 -->
         <nav class="admin-nav">
             <ul class="nav-list">
-                <li class="nav-item active" data-tab="games">游戏管理</li>
-                <li class="nav-item" data-tab="add">添加游戏</li>
-                <li class="nav-item" id="homeNav">返回主页</li>
-                <li class="nav-item" id="accountsNav">账户管理</li>
+                <li class="nav-item active" data-tab="dashboard">仪表板</li>
+                <li class="nav-item" data-tab="games">游戏管理</li>
+                <li class="nav-item" data-tab="accounts">账户管理</li>
+                <li class="nav-item" data-tab="users">用户管理</li>
                 <li class="nav-item action">
                     <button class="logout-btn" id="logoutBtn">退出登录</button>
                 </li>
@@ -416,27 +416,14 @@
         // DOM加载完成后执行
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOMContentLoaded event fired');
-            // 检查登录状态
-            checkLoginStatus().then(() => {
-                console.log('认证检查通过，继续初始化');
-                // 令牌有效，继续初始化
-                // 绑定事件监听器
-                bindEventListeners();
-                
-                // 获取游戏列表
-                fetchGames();
-                
-                // 监听来自子窗口的消息
-                window.addEventListener('message', handleWindowMessage);
-            }).catch(error => {
-                // 处理错误情况，不阻止页面初始化
-                console.error('登录检查失败:', error);
-                console.log('即使认证检查失败，也要继续初始化页面');
-                // 即使认证检查失败，也要绑定事件监听器和获取游戏列表
-                bindEventListeners();
-                fetchGames();
-                window.addEventListener('message', handleWindowMessage);
-            });
+            // 绑定事件监听器
+            bindEventListeners();
+            
+            // 获取游戏列表
+            fetchGames();
+            
+            // 监听来自子窗口的消息
+            window.addEventListener('message', handleWindowMessage);
         });
         
         // 检查登录状态
@@ -492,21 +479,39 @@
         // 绑定事件监听器
         function bindEventListeners() {
             // 退出登录按钮
-            document.getElementById('logoutBtn').addEventListener('click', logout);
-            
-            // 返回主页导航项
-            document.getElementById('homeNav').addEventListener('click', () => {
-                window.location.assign('/');
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('adminToken');
+                window.location.href = '/admin/login';
             });
             
-            // 账户管理导航项
-            document.getElementById('accountsNav').addEventListener('click', () => {
-                window.location.assign('/admin-accounts.html');
-            });
-            
-            // 导航栏切换（仅内容区域）
+            // 导航功能
             document.querySelectorAll('.nav-item[data-tab]').forEach(item => {
-                item.addEventListener('click', switchTab);
+                item.addEventListener('click', function() {
+                    const tab = this.getAttribute('data-tab');
+                    switch(tab) {
+                        case 'dashboard':
+                            window.location.href = '/admin/dashboard';
+                            break;
+                        case 'games':
+                            window.location.href = '/admin/edit-game';
+                            break;
+                        case 'accounts':
+                            window.location.href = '/admin/accounts';
+                            break;
+                        case 'users':
+                            window.location.href = '/admin/users';
+                            break;
+                    }
+                });
+            });
+            
+            // 搜索功能
+            document.getElementById('searchBtn').addEventListener('click', searchGames);
+            document.getElementById('clearSearchBtn').addEventListener('click', clearSearch);
+            document.getElementById('searchInput').addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    searchGames();
+                }
             });
             
             // 添加游戏表单
@@ -514,15 +519,6 @@
             
             // 重置表单按钮
             document.getElementById('resetFormBtn').addEventListener('click', resetAddForm);
-            
-            // 搜索功能
-            document.getElementById('searchBtn').addEventListener('click', performSearch);
-            document.getElementById('searchInput').addEventListener('keyup', function(event) {
-                if (event.key === 'Enter') {
-                    performSearch();
-                }
-            });
-            document.getElementById('clearSearchBtn').addEventListener('click', clearSearch);
         }
         
         // 处理来自子窗口的消息
@@ -564,7 +560,7 @@
             if (!token) {
                 // 如果没有令牌，重定向到登录页面
                 console.log('没有找到令牌，重定向到登录页面');
-                window.location.assign('/admin/login');
+                handleUnauthorized();
                 return;
             }
             
@@ -584,8 +580,7 @@
                 } else if (response.status === 401 || response.status === 403) {
                     // 令牌无效或过期，重定向到登录页面
                     console.log('令牌无效或已过期，清除令牌并重定向到登录页面');
-                    localStorage.removeItem('adminToken');
-                    window.location.assign('/admin/login');
+                    handleUnauthorized();
                 } else {
                     console.log('获取游戏列表失败，状态码:', response.status);
                     showNotification('获取游戏列表失败', 'error');
@@ -603,7 +598,7 @@
         }
         
         // 执行搜索
-        function performSearch() {
+        function searchGames() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
             
             if (!searchTerm) {
@@ -682,9 +677,11 @@
             // 清除令牌
             localStorage.removeItem('adminToken');
             // 显示提示信息
-            showNotification('请先登录', 'error');
+            showNotification('登录已过期，请重新登录', 'error');
             // 重定向到登录页面
-            window.location.assign('/admin/login');
+            setTimeout(() => {
+                window.location.assign('/admin/login');
+            }, 1500);
         }
         
         // 添加游戏
@@ -719,6 +716,101 @@
                     },
                     body: JSON.stringify(gameData)
                 });
+                
+                if (response.ok) {
+                    showAddNotification('游戏添加成功', 'success');
+                    // 重置表单
+                    document.getElementById('addGameForm').reset();
+                    document.getElementById('isMaintained').checked = true;
+                    // 重新加载游戏列表
+                    fetchGames();
+                } else if (response.status === 401 || response.status === 403) {
+                    // 令牌无效或过期
+                    handleUnauthorized();
+                } else if (response.status === 401 || response.status === 403) {
+                    // 令牌无效或过期
+                    handleUnauthorized();
+                } else {
+                    showAddNotification('添加游戏失败: ' + response.status, 'error');
+                }
+            } catch (error) {
+                console.error('Error adding game:', error);
+                // 特别处理网络错误
+                if (error instanceof TypeError && error.message.includes('fetch')) {
+                    showAddNotification('网络连接错误，请检查网络连接', 'error');
+                } else if (error.name === 'AbortError') {
+                    showAddNotification('请求超时，请重试', 'error');
+                } else {
+                    showAddNotification('添加游戏时发生未知错误', 'error');
+                }
+            } finally {
+                // 确保无论成功或失败都重新启用提交按钮
+                const submitButton = document.querySelector('#addGameForm button[type="submit"]');
+                if (submitButton) {
+                    submitButton.disabled = false;
+                }
+            }
+        }
+        
+        // 在全局作用域添加abort控制器
+        let addGameAbortController = null;
+        
+        // 修改添加游戏函数以支持请求超时
+        async function addGame(event) {
+            event.preventDefault();
+            
+            // 取消之前的请求（如果存在）
+            if (addGameAbortController) {
+                addGameAbortController.abort();
+            }
+            
+            // 创建新的AbortController
+            addGameAbortController = new AbortController();
+            const signal = addGameAbortController.signal;
+            
+            // 禁用提交按钮以防止重复提交
+            const submitButton = document.querySelector('#addGameForm button[type="submit"]');
+            if (submitButton) {
+                submitButton.disabled = true;
+            }
+            
+            // 从localStorage获取最新的令牌
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                // 如果没有令牌，重定向到登录页面
+                handleUnauthorized();
+                return;
+            }
+            
+            const gameData = {
+                name: document.getElementById('gameName').value,
+                alias: document.getElementById('gameAlias').value,
+                cover_link: document.getElementById('coverLink').value,
+                game_address: document.getElementById('gameAddress').value,
+                author: document.getElementById('gameAuthor').value,
+                is_commercial: document.getElementById('isCommercial').checked,
+                is_repost: document.getElementById('isRepost').checked,
+                is_maintained: document.getElementById('isMaintained').checked
+            };
+            
+            try {
+                // 设置5秒超时
+                const timeout = setTimeout(() => {
+                    addGameAbortController.abort();
+                    showAddNotification('请求超时，请重试', 'error');
+                }, 5000);
+                
+                const response = await fetch('/api/games', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(gameData),
+                    signal: signal
+                });
+                
+                clearTimeout(timeout);
                 
                 if (response.ok) {
                     showAddNotification('游戏添加成功', 'success');

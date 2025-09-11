@@ -2,8 +2,50 @@
 document.addEventListener('DOMContentLoaded', function() {
     const gamesContainer = document.getElementById('gamesContainer');
     
+    // 检查用户登录状态
+    checkLoginStatus();
+    
     // 页面加载时获取游戏数据
     fetchGames();
+    
+    // 检查用户登录状态的函数
+    function checkLoginStatus() {
+        const userToken = localStorage.getItem('userToken');
+        const userInfo = localStorage.getItem('userInfo');
+        
+        const userInfoElement = document.getElementById('user-info');
+        const authLinksElement = document.getElementById('auth-links');
+        const welcomeMessageElement = document.getElementById('welcome-message');
+        const logoutLinkElement = document.getElementById('logout-link');
+        
+        if (userToken && userInfo) {
+            // 用户已登录
+            const user = JSON.parse(userInfo);
+            welcomeMessageElement.textContent = `欢迎, ${user.username}!`;
+            userInfoElement.style.display = 'flex';
+            authLinksElement.style.display = 'none';
+            
+            // 设置退出登录功能
+            logoutLinkElement.addEventListener('click', function(e) {
+                e.preventDefault();
+                logout();
+            });
+        } else {
+            // 用户未登录
+            userInfoElement.style.display = 'none';
+            authLinksElement.style.display = 'block';
+        }
+    }
+    
+    // 退出登录函数
+    function logout() {
+        // 清除本地存储的用户信息
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userInfo');
+        
+        // 刷新页面以更新UI
+        location.reload();
+    }
     
     // 从后端API获取游戏数据
     async function fetchGames() {
@@ -19,6 +61,31 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error('Error fetching games:', error);
             gamesContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; font-size: 1.2rem; color: #777;">加载游戏数据时发生错误</p>';
+        }
+    }
+    
+    // 记录游戏历史
+    async function recordGamePlay(gameId) {
+        const userToken = localStorage.getItem('userToken');
+        if (!userToken) {
+            console.log('用户未登录，无法记录游戏历史');
+            return;
+        }
+        
+        try {
+            const response = await fetch(`/api/users/games/${gameId}/play`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${userToken}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (!response.ok) {
+                console.error('记录游戏历史失败:', response.status);
+            }
+        } catch (error) {
+            console.error('记录游戏历史时发生错误:', error);
         }
     }
     
@@ -67,6 +134,12 @@ document.addEventListener('DOMContentLoaded', function() {
             button.addEventListener('click', function() {
                 const gameId = this.getAttribute('data-game-id');
                 const gameAddress = this.getAttribute('data-game-address');
+                
+                // 如果用户已登录，记录游戏历史
+                const userToken = localStorage.getItem('userToken');
+                if (userToken) {
+                    recordGamePlay(gameId);
+                }
                 
                 if (gameAddress && gameAddress !== '#') {
                     window.location.assign(gameAddress);

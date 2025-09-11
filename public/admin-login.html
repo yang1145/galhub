@@ -202,9 +202,9 @@
                     const storedToken = localStorage.getItem('adminToken');
                     console.log('验证存储的令牌:', storedToken);
                     
-                    // 使用更可靠的跳转方式
+                    // 使用带令牌参数的跳转方式
                     console.log('登录成功，跳转到管理面板');
-                    window.location.href = '/admin/dashboard';
+                    window.location.href = `/admin/dashboard?token=${data.token}`;
                 } else {
                     // 登录失败，显示错误信息并刷新验证码
                     console.log('登录失败:', data.message);

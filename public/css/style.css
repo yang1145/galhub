@@ -45,6 +45,7 @@ header h1 {
     display: flex;
     list-style: none;
     gap: 1.5rem;
+    align-items: center;
 }
 
 .main-nav a {
@@ -63,6 +64,26 @@ header h1 {
 .main-nav a.active {
     background-color: #64b5f6; /* 浅蓝色背景 */
     color: white;
+}
+
+/* 用户信息样式 */
+#user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+#logout-link {
+    background-color: #ff6b6b;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+#logout-link:hover {
+    background-color: #ff5252;
 }
 
 /* 主体内容样式 */
@@ -162,6 +183,16 @@ main {
     line-height: 1.4;
 }
 
+/* 游戏元信息样式 */
+.game-meta {
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
+.game-meta small {
+    color: #777;
+}
+
 /* 游戏操作区域样式 */
 .game-actions {
     padding: 0 1.2rem 1.2rem;
@@ -199,12 +230,18 @@ footer {
     border-top: 1px solid #bbdefb;
 }
 
-.footer-content p {
-    margin: 0.5rem 0;
+/* 历史统计样式 */
+.history-stats {
+    background-color: #e3f2fd;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
-.footer-content p:first-child {
-    font-size: 1.1rem;
+.history-stats h2 {
+    color: #0d47a1;
+    margin-bottom: 0.5rem;
 }
 
 /* 响应式设计 */
