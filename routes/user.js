@@ -24,6 +24,11 @@ const authenticateToken = (req, res, next) => {
   
   if (!token) {
     console.log('认证失败：访问令牌缺失');
+    // 对于HTML页面请求，重定向到登录页面
+    if (req.headers.accept && req.headers.accept.includes('text/html')) {
+      return res.redirect('/login');
+    }
+    // 对于API请求，返回JSON错误
     return res.status(401).json({ success: false, message: '访问令牌缺失' });
   }
 
@@ -32,6 +37,11 @@ const authenticateToken = (req, res, next) => {
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
       console.error('令牌验证失败:', err);
+      // 对于HTML页面请求，重定向到登录页面
+      if (req.headers.accept && req.headers.accept.includes('text/html')) {
+        return res.redirect('/login');
+      }
+      // 对于API请求，返回JSON错误
       return res.status(403).json({ 
         success: false, 
         message: '访问令牌无效' 
@@ -57,7 +67,6 @@ router.get('/', authenticateToken, async (req, res) => {
     
     // 从用户数据库获取所有用户
     const users = await new Promise((resolve, reject) => {
-      const userDb = require('../database/user-db');
       const db = require('sqlite3').verbose();
       const path = require('path');
       const dbPath = path.join(__dirname, '../database', 'users.db');
@@ -126,7 +135,6 @@ router.post('/', authenticateToken, async (req, res) => {
     // 如果需要设置激活状态
     if (is_active === false) {
       await new Promise((resolve, reject) => {
-        const userDb = require('../database/user-db');
         const db = require('sqlite3').verbose();
         const path = require('path');
         const dbPath = path.join(__dirname, '../database', 'users.db');
@@ -170,23 +178,14 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     
     // 从用户数据库删除用户
     const result = await new Promise((resolve, reject) => {
-      const userDb = require('../database/user-db');
-      const db = require('sqlite3').verbose();
-      const path = require('path');
-      const dbPath = path.join(__dirname, '../database', 'users.db');
-      const database = new db.Database(dbPath, (err) => {
-        if (err) {
-          reject(err);
-        }
-      });
+      const { db } = require('../database/user-db');
       
-      database.run('DELETE FROM users WHERE id = ?', [id], function (err) {
+      db.run('DELETE FROM users WHERE id = ?', [id], function (err) {
         if (err) {
           reject(err);
         } else {
           resolve({ changes: this.changes });
         }
-        database.close();
       });
     });
     

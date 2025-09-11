@@ -2,13 +2,6 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const cookieParser = require('cookie-parser');
-const { 
-  initDb, 
-} = require('./database/db');
-
-const { 
-  initUserDb,
-} = require('./database/user-db');
 
 // 导入路由模块
 const adminRoutes = require('./routes/admin');
@@ -28,16 +21,6 @@ app.use(cookieParser());
 const captchaStore = new Map();
 app.set('captchaStore', captchaStore);
 
-// 初始化数据库
-initDb().then(() => {
-  console.log('Games database initialized');
-  return initUserDb();
-}).then(() => {
-  console.log('User database initialized');
-}).catch(err => {
-  console.error('Error initializing database:', err);
-  process.exit(1); // 数据库初始化失败时退出进程
-});
 
 // 路由：主页
 app.get('/', (req, res) => {

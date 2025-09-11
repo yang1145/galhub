@@ -8,6 +8,7 @@ const dbPath = path.join(__dirname, 'games.db');
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('Error opening database:', err.message);
+    console.error('Database path:', dbPath);
     process.exit(1);
   } else {
     console.log('Connected to the SQLite database.');
@@ -32,6 +33,7 @@ if (args.length >= 2) {
 bcrypt.hash(password, 10, (err, hash) => {
   if (err) {
     console.error('Error hashing password:', err.message);
+    console.error('Password:', password ? `${password.substring(0, 3)}***` : 'undefined');
     db.close();
     process.exit(1);
   } else {
@@ -39,6 +41,8 @@ bcrypt.hash(password, 10, (err, hash) => {
     db.run(sql, [username, hash], function(err) {
       if (err) {
         console.error('Error creating admin:', err.message);
+        console.error('SQL statement:', sql);
+        console.error('Username:', username);
         db.close();
         process.exit(1);
       } else {

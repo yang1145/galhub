@@ -43,28 +43,13 @@ const initializeDatabase = () => {
         }
       });
       
-      // 创建游戏表（解决外键依赖）
-      db.run(`CREATE TABLE IF NOT EXISTS games (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        description TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      )`, (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          console.log('Games table created or already exists.');
-        }
-      });
-      
-      // 创建用户游戏历史表
+      // 创建用户游戏历史表，直接引用主数据库的games表
       db.run(`CREATE TABLE IF NOT EXISTS user_game_history (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
         game_id INTEGER NOT NULL,
         played_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-        FOREIGN KEY (game_id) REFERENCES games (id) ON DELETE CASCADE,
         UNIQUE(user_id, game_id)
       )`, (err) => {
         if (err) {
@@ -179,27 +164,30 @@ const findUserByEmail = (email) => {
 const recordGamePlay = (userId, gameId) => {
   return new Promise((resolve, reject) => {
     // 首先检查游戏是否存在且处于维护状态
-    db.get("SELECT id FROM games WHERE id = ? AND is_maintained = 1", [gameId], (err, row) => {
-      if (err) {
-        reject(err);
-      } else if (!row) {
-        reject(new Error('Game not found or not maintained'));
-      } else {
-        // 游戏存在，记录游戏历史
-        db.run(
-          `INSERT OR REPLACE INTO user_game_history (user_id, game_id, played_at) 
-           VALUES (?, ?, datetime('now'))`,
-          [userId, gameId],
-          function (err) {
-            if (err) {
-              reject(err);
-            } else {
-              resolve({ userId, gameId, playedAt: new Date() });
+    const mainDb = require('./db');
+    mainDb.getGameById(gameId)
+      .then(game => {
+        if (!game || !game.is_maintained) {
+          reject(new Error('Game not found or not maintained'));
+        } else {
+          // 游戏存在，记录游戏历史
+          db.run(
+            `INSERT OR REPLACE INTO user_game_history (user_id, game_id, played_at) 
+             VALUES (?, ?, datetime('now'))`,
+            [userId, gameId],
+            function (err) {
+              if (err) {
+                reject(err);
+              } else {
+                resolve({ userId, gameId, playedAt: new Date() });
+              }
             }
-          }
-        );
-      }
-    });
+          );
+        }
+      })
+      .catch(err => {
+        reject(err);
+      });
   });
 };
 
@@ -207,10 +195,11 @@ const recordGamePlay = (userId, gameId) => {
 const getUserGameHistory = (userId) => {
   return new Promise((resolve, reject) => {
     const sql = `
-      SELECT g.*, ugh.played_at
+      SELECT g.id, g.name, g.alias, g.cover_link, g.game_address, g.add_time, 
+             g.author, g.is_commercial, g.is_repost, g.is_maintained, ugh.played_at
       FROM user_game_history ugh
       JOIN games g ON ugh.game_id = g.id
-      WHERE ugh.user_id = ? AND g.is_maintained = 1
+      WHERE ugh.user_id = ?
       ORDER BY ugh.played_at DESC
     `;
     

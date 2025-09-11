@@ -3,8 +3,10 @@ node_modules/
 npm-debug.log
 
 # 数据库文件
-database/games.db
-database/users.db
+database/*.db
+!database/init.js
+!database/init-users.js
+!database/create-admin.js
 
 # 日志文件
 *.log

@@ -14,6 +14,8 @@ if (!fs.existsSync(dbDir)) {
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('Error opening database:', err.message);
+    console.error('Database path:', dbPath);
+    process.exit(1);
   } else {
     console.log('Connected to the SQLite user database.');
   }
@@ -31,17 +33,39 @@ db.serialize(() => {
   )`, (err) => {
     if (err) {
       console.error('Error creating users table:', err.message);
+      console.error('SQL statement:', `CREATE TABLE IF NOT EXISTS users (...)`);
+      process.exit(1);
     } else {
       console.log('Users table created or already exists.');
     }
   });
-});
-
-// 关闭数据库连接
-db.close((err) => {
-  if (err) {
-    console.error('Error closing database:', err.message);
-  } else {
-    console.log('User database initialized and connection closed.');
-  }
+  
+  // 创建用户游戏历史表
+  db.run(`CREATE TABLE IF NOT EXISTS user_game_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    game_id INTEGER NOT NULL,
+    played_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (game_id) REFERENCES games (id) ON DELETE CASCADE,
+    UNIQUE(user_id, game_id)
+  )`, (err) => {
+    if (err) {
+      console.error('Error creating user game history table:', err.message);
+      console.error('SQL statement:', `CREATE TABLE IF NOT EXISTS user_game_history (...)`);
+      process.exit(1);
+    } else {
+      console.log('User game history table created or already exists.');
+    }
+    
+    // 关闭数据库连接
+    db.close((err) => {
+      if (err) {
+        console.error('Error closing database:', err.message);
+        process.exit(1);
+      } else {
+        console.log('User database initialized and connection closed.');
+      }
+    });
+  });
 });

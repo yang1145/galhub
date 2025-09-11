@@ -14,6 +14,8 @@ if (!fs.existsSync(dbDir)) {
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('Error opening database:', err.message);
+    console.error('Database path:', dbPath);
+    process.exit(1);
   } else {
     console.log('Connected to the SQLite database.');
   }
@@ -36,6 +38,8 @@ db.serialize(() => {
   )`, (err) => {
     if (err) {
       console.error('Error creating games table:', err.message);
+      console.error('SQL statement:', `CREATE TABLE IF NOT EXISTS games (...)`);
+      process.exit(1);
     } else {
       console.log('Games table created or already exists.');
     }
@@ -50,8 +54,50 @@ db.serialize(() => {
   )`, (err) => {
     if (err) {
       console.error('Error creating admins table:', err.message);
+      console.error('SQL statement:', `CREATE TABLE IF NOT EXISTS admins (...)`);
+      process.exit(1);
     } else {
       console.log('Admins table created or already exists.');
+      
+      // 检查是否已存在默认管理员账户
+      db.get("SELECT COUNT(*) as count FROM admins", [], (err, row) => {
+        if (err) {
+          console.error('Error checking existing admins:', err.message);
+          process.exit(1);
+        } else if (row.count === 0) {
+          // 创建默认管理员账户 (admin/admin123)
+          bcrypt.hash('admin123', 10, (err, hash) => {
+            if (err) {
+              console.error('Error hashing default admin password:', err.message);
+              process.exit(1);
+            } else {
+              db.run("INSERT INTO admins (username, password_hash) VALUES (?, ?)", 
+                ['admin', hash], 
+                (err) => {
+                  if (err) {
+                    console.error('Error creating default admin:', err.message);
+                    process.exit(1);
+                  } else {
+                    console.log('Default admin account created (admin/admin123)');
+                  }
+                }
+              );
+            }
+          });
+        } else {
+          console.log('Admin account(s) already exist, skipping default admin creation.');
+        }
+      });
+    }
+  });
+  
+  // 关闭数据库连接
+  db.close((err) => {
+    if (err) {
+      console.error('Error closing database:', err.message);
+      process.exit(1);
+    } else {
+      console.log('Database initialized and connection closed.');
     }
   });
 });
