@@ -15,6 +15,14 @@ const {
   deleteAdmin
 } = require('./database/db');
 
+const { 
+  initUserDb,
+  registerUser,
+  validateUser,
+  findUserByUsername,
+  findUserByEmail
+} = require('./database/user-db');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'galhub_secret_key'; // 在生产环境中应该使用环境变量
@@ -27,7 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const captchaStore = new Map();
 
 // 初始化数据库
-initDb().then(() => {
+Promise.all([initDb(), initUserDb()]).then(() => {
   console.log('Database initialized');
 }).catch(err => {
   console.error('Error initializing database:', err);
@@ -74,6 +82,16 @@ const handleAuthError = (req, res, message, statusCode) => {
 // 路由：主页
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// 路由：用户注册页面
+app.get('/register', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'register.html'));
+});
+
+// 路由：用户登录页面
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 // 路由：搜索页面
@@ -348,6 +366,75 @@ app.delete('/api/games/:id', authenticateToken, async (req, res) => {
   } catch (err) {
     console.error('Error deleting game:', err);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// API路由：用户注册
+app.post('/api/users/register', async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    
+    // 简单验证
+    if (!username || !email || !password) {
+      return res.status(400).json({ error: '用户名、邮箱和密码都是必填项' });
+    }
+    
+    if (password.length < 6) {
+      return res.status(400).json({ error: '密码长度至少为6位' });
+    }
+    
+    // 检查用户名是否已存在
+    const existingUser = await findUserByUsername(username);
+    if (existingUser) {
+      return res.status(400).json({ error: '用户名已存在' });
+    }
+    
+    // 检查邮箱是否已存在
+    const existingEmail = await findUserByEmail(email);
+    if (existingEmail) {
+      return res.status(400).json({ error: '邮箱已被注册' });
+    }
+    
+    // 注册用户
+    const user = await registerUser(username, email, password);
+    res.status(201).json({ message: '注册成功', user });
+  } catch (err) {
+    console.error('Error registering user:', err);
+    res.status(500).json({ error: '注册失败，请稍后重试' });
+  }
+});
+
+// API路由：用户登录
+app.post('/api/users/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    // 简单验证
+    if (!username || !password) {
+      return res.status(400).json({ error: '用户名和密码都是必填项' });
+    }
+    
+    // 验证用户
+    const user = await validateUser(username, password);
+    if (!user) {
+      return res.status(401).json({ error: '用户名或密码错误' });
+    }
+    
+    // 生成JWT令牌
+    const token = jwt.sign(
+      { id: user.id, username: user.username, type: 'user' },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+    
+    res.json({ 
+      message: '登录成功',
+      token,
+      user: { id: user.id, username: user.username, email: user.email }
+    });
+  } catch (err) {
+    console.error('Error logging in:', err);
+    res.status(500).json({ error: '登录失败，请稍后重试' });
   }
 });
 

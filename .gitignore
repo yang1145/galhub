@@ -1,8 +1,10 @@
 # 依赖目录
 node_modules/
+npm-debug.log
 
 # 数据库文件
 database/games.db
+database/users.db
 
 # 日志文件
 *.log

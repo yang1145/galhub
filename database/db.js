@@ -307,7 +307,9 @@ const initSampleData = () => {
   });
 };
 
+// Export the database instance and functions
 module.exports = {
+  db, // Exported first for clarity
   initDb,
   initSampleData,
   getAllGames,
@@ -318,6 +320,5 @@ module.exports = {
   validateAdmin,
   createAdmin,
   getAllAdmins,
-  deleteAdmin,
-  db
+  deleteAdmin
 };

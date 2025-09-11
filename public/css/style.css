@@ -65,26 +65,6 @@ header h1 {
     color: white;
 }
 
-.search-link {
-    margin-top: 1rem;
-}
-
-.search-link a {
-    color: #0d47a1;
-    text-decoration: none;
-    font-weight: 500;
-    background-color: #e3f2fd;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
-    border: 1px solid #bbdefb;
-}
-
-.search-link a:hover {
-    background-color: #bbdefb;
-    text-decoration: underline;
-}
-
 /* 主体内容样式 */
 main {
     max-width: 1200px;
@@ -92,6 +72,25 @@ main {
     padding: 0 1rem;
     flex: 1;
     width: 100%;
+}
+
+.hero {
+    text-align: center;
+    padding: 3rem 1rem;
+    margin-bottom: 2rem;
+    background-color: #f5f9ff;
+    border-radius: 8px;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    color: #0d47a1;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: #546e7a;
 }
 
 /* 游戏容器样式 */
