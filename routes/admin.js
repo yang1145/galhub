@@ -219,7 +219,7 @@ router.post('/login', ensureDBConnection, async (req, res) => {
       res.status(401).json({ success: false, message: '用户名或密码错误' });
     }
   } catch (err) {
-    console.error('Error during admin login:', err);
+    console.error('管理员登录过程中出错:', err);
     console.error('登录错误详情:', {
       message: err.message,
       stack: err.stack,
@@ -271,7 +271,7 @@ router.get('/', ensureDBConnection, authenticateToken, async (req, res) => {
       count: admins.length
     });
   } catch (err) {
-    console.error('Error fetching admins:', err);
+    console.error('获取管理员列表时出错:', err);
     console.error('获取管理员列表错误详情:', {
       message: err.message,
       stack: err.stack,
@@ -320,7 +320,7 @@ router.post('/', ensureDBConnection, authenticateToken, async (req, res) => {
     
     res.status(201).json({ success: true, message: '管理员账户创建成功', admin });
   } catch (err) {
-    console.error('Error creating admin:', err);
+    console.error('创建管理员时出错:', err);
     console.error('创建管理员账户错误详情:', {
       message: err.message,
       stack: err.stack,
@@ -415,7 +415,7 @@ router.get('/users', authenticateToken, async (req, res) => {
       count: users.length
     });
   } catch (err) {
-    console.error('Error fetching users:', err);
+    console.error('获取用户列表时出错:', err);
     console.error('获取用户列表错误详情:', {
       message: err.message,
       stack: err.stack,

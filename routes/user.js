@@ -144,7 +144,7 @@ router.get('/', authenticateToken, async (req, res) => {
       count: users.length
     });
   } catch (err) {
-    console.error('Error fetching users:', err);
+    console.error('获取用户列表时出错:', err);
     console.error('获取用户列表错误详情:', {
       message: err.message,
       stack: err.stack,
@@ -241,7 +241,7 @@ router.post('/', authenticateToken, async (req, res) => {
     
     res.status(201).json({ success: true, message: '用户创建成功', user });
   } catch (err) {
-    console.error('Error creating user:', err);
+    console.error('创建用户时出错:', err);
     console.error('创建用户错误详情:', {
       message: err.message,
       stack: err.stack,
@@ -306,7 +306,7 @@ router.delete('/:id', authenticateToken, async (req, res) => {
       res.status(404).json({ success: false, message: '用户不存在' });
     }
   } catch (err) {
-    console.error('Error deleting user:', err);
+    console.error('删除用户时出错:', err);
     console.error('删除用户错误详情:', {
       message: err.message,
       stack: err.stack,
@@ -369,7 +369,7 @@ router.post('/register', async (req, res) => {
     
     res.status(201).json({ message: '注册成功', user });
   } catch (err) {
-    console.error('Error registering user:', err);
+    console.error('用户注册过程中出错:', err);
     console.error('用户注册错误详情:', {
       message: err.message,
       stack: err.stack,
@@ -427,7 +427,7 @@ router.post('/login', async (req, res) => {
       user: { id: user.id, username: user.username, email: user.email }
     });
   } catch (err) {
-    console.error('Error logging in:', err);
+    console.error('用户登录过程中出错:', err);
     console.error('用户登录错误详情:', {
       message: err.message,
       stack: err.stack,
@@ -475,7 +475,7 @@ router.post('/games/:gameId/play', authenticateToken, async (req, res) => {
     
     res.json({ message: '游戏历史记录成功' });
   } catch (err) {
-    console.error('Error recording game play:', err);
+    console.error('记录游戏历史时出错:', err);
     console.error('记录游戏历史错误详情:', {
       message: err.message,
       stack: err.stack,
@@ -512,7 +512,7 @@ router.get('/games/history', authenticateToken, async (req, res) => {
       count: history.length
     });
   } catch (err) {
-    console.error('Error fetching game history:', err);
+    console.error('获取游戏历史时出错:', err);
     console.error('获取游戏历史错误详情:', {
       message: err.message,
       stack: err.stack,
@@ -552,7 +552,7 @@ router.get('/games/count', authenticateToken, async (req, res) => {
       count 
     });
   } catch (err) {
-    console.error('Error fetching game count:', err);
+    console.error('获取游戏数量时出错:', err);
     console.error('获取游戏数量错误详情:', {
       message: err.message,
       stack: err.stack,

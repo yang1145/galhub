@@ -80,7 +80,7 @@ router.get('/', async (req, res) => {
       count: games.length
     });
   } catch (err) {
-    console.error('Error fetching games:', err);
+    console.error('获取游戏列表时出错:', err);
     console.error('获取游戏列表错误详情:', {
       message: err.message,
       stack: err.stack
@@ -88,7 +88,7 @@ router.get('/', async (req, res) => {
     
     res.status(500).json({ 
       success: false,
-      error: 'Internal server error',
+      error: '服务器内部错误',
       ...(process.env.NODE_ENV === 'development' ? { 
         details: err.message,
         stack: err.stack
@@ -122,11 +122,11 @@ router.get('/:id', async (req, res) => {
       console.log('游戏未找到:', id);
       res.status(404).json({ 
         success: false,
-        error: 'Game not found' 
+        error: '游戏未找到' 
       });
     }
   } catch (err) {
-    console.error('Error fetching game:', err);
+    console.error('获取游戏详情时出错:', err);
     console.error('获取游戏详情错误详情:', {
       message: err.message,
       stack: err.stack,
@@ -135,7 +135,7 @@ router.get('/:id', async (req, res) => {
     
     res.status(500).json({ 
       success: false,
-      error: 'Internal server error',
+      error: '服务器内部错误',
       ...(process.env.NODE_ENV === 'development' ? { 
         details: err.message,
         stack: err.stack
@@ -164,11 +164,11 @@ router.post('/', authenticateToken, async (req, res) => {
     
     res.status(201).json({ 
       success: true,
-      message: 'Game added successfully',
+      message: '游戏添加成功',
       id: result.id 
     });
   } catch (err) {
-    console.error('Error adding game:', err);
+    console.error('添加游戏时出错:', err);
     console.error('添加游戏错误详情:', {
       message: err.message,
       stack: err.stack,
@@ -178,7 +178,7 @@ router.post('/', authenticateToken, async (req, res) => {
     
     res.status(500).json({ 
       success: false,
-      error: 'Internal server error',
+      error: '服务器内部错误',
       ...(process.env.NODE_ENV === 'development' ? { 
         details: err.message,
         stack: err.stack
@@ -210,17 +210,17 @@ router.put('/:id', authenticateToken, async (req, res) => {
       
       res.json({ 
         success: true,
-        message: 'Game updated successfully' 
+        message: '游戏更新成功' 
       });
     } else {
       console.log('游戏未找到:', id);
       res.status(404).json({ 
         success: false,
-        error: 'Game not found' 
+        error: '游戏未找到' 
       });
     }
   } catch (err) {
-    console.error('Error updating game:', err);
+    console.error('更新游戏时出错:', err);
     console.error('更新游戏错误详情:', {
       message: err.message,
       stack: err.stack,
@@ -231,7 +231,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
     
     res.status(500).json({ 
       success: false,
-      error: 'Internal server error',
+      error: '服务器内部错误',
       ...(process.env.NODE_ENV === 'development' ? { 
         details: err.message,
         stack: err.stack
@@ -260,17 +260,17 @@ router.delete('/:id', authenticateToken, async (req, res) => {
       
       res.json({ 
         success: true,
-        message: 'Game deleted successfully' 
+        message: '游戏删除成功' 
       });
     } else {
       console.log('游戏未找到:', id);
       res.status(404).json({ 
         success: false,
-        error: 'Game not found' 
+        error: '游戏未找到' 
       });
     }
   } catch (err) {
-    console.error('Error deleting game:', err);
+    console.error('删除游戏时出错:', err);
     console.error('删除游戏错误详情:', {
       message: err.message,
       stack: err.stack,
@@ -280,7 +280,7 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     
     res.status(500).json({ 
       success: false,
-      error: 'Internal server error',
+      error: '服务器内部错误',
       ...(process.env.NODE_ENV === 'development' ? { 
         details: err.message,
         stack: err.stack

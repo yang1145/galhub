@@ -3,6 +3,7 @@ const path = require('path');
 const dbPath = path.join(__dirname, 'users.db');
 const fs = require('fs');
 const bcrypt = require('bcryptjs');
+const { info, error } = require('../log');
 
 // 确保database目录存在
 const dbDir = path.dirname(dbPath);
@@ -13,11 +14,13 @@ if (!fs.existsSync(dbDir)) {
 // 创建数据库连接
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
-    console.error('Error opening database:', err.message);
-    console.error('Database path:', dbPath);
+    error('Error opening database:', {
+      message: err.message,
+      databasePath: dbPath
+    });
     process.exit(1);
   } else {
-    console.log('Connected to the SQLite user database.');
+    info('Connected to the SQLite user database.', { databasePath: dbPath });
   }
 });
 
@@ -32,11 +35,13 @@ db.serialize(() => {
     is_active BOOLEAN DEFAULT 1
   )`, (err) => {
     if (err) {
-      console.error('Error creating users table:', err.message);
-      console.error('SQL statement:', `CREATE TABLE IF NOT EXISTS users (...)`);
+      error('Error creating users table:', {
+        message: err.message,
+        sql: 'CREATE TABLE IF NOT EXISTS users (...)'
+      });
       process.exit(1);
     } else {
-      console.log('Users table created or already exists.');
+      info('Users table created or already exists.');
     }
   });
   
@@ -51,20 +56,22 @@ db.serialize(() => {
     UNIQUE(user_id, game_id)
   )`, (err) => {
     if (err) {
-      console.error('Error creating user game history table:', err.message);
-      console.error('SQL statement:', `CREATE TABLE IF NOT EXISTS user_game_history (...)`);
+      error('Error creating user game history table:', {
+        message: err.message,
+        sql: 'CREATE TABLE IF NOT EXISTS user_game_history (...)'
+      });
       process.exit(1);
     } else {
-      console.log('User game history table created or already exists.');
+      info('User game history table created or already exists.');
     }
     
     // 关闭数据库连接
     db.close((err) => {
       if (err) {
-        console.error('Error closing database:', err.message);
+        error('Error closing database:', { message: err.message });
         process.exit(1);
       } else {
-        console.log('User database initialized and connection closed.');
+        info('User database initialized and connection closed.');
       }
     });
   });

@@ -1,17 +1,20 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const bcrypt = require('bcryptjs');
+const { info, error } = require('../log');
 
 const dbPath = path.join(__dirname, 'games.db');
 
 // 创建数据库连接
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
-    console.error('Error opening database:', err.message);
-    console.error('Database path:', dbPath);
+    error('打开数据库时出错:', {
+      message: err.message,
+      databasePath: dbPath
+    });
     process.exit(1);
   } else {
-    console.log('Connected to the SQLite database.');
+    info('已连接到SQLite数据库', { databasePath: dbPath });
   }
 });
 
@@ -26,30 +29,34 @@ if (args.length >= 2) {
   // 使用默认值
   username = 'admin';
   password = 'admin123';
-  console.log(`未提供用户名和密码，使用默认值: ${username}/${password}`);
+  info(`未提供用户名和密码，使用默认值: ${username}/${password}`);
 }
 
 // 创建管理员账户
 bcrypt.hash(password, 10, (err, hash) => {
   if (err) {
-    console.error('Error hashing password:', err.message);
-    console.error('Password:', password ? `${password.substring(0, 3)}***` : 'undefined');
+    error('密码哈希处理出错:', {
+      message: err.message,
+      password: password ? `${password.substring(0, 3)}***` : '未定义'
+    });
     db.close();
     process.exit(1);
   } else {
     const sql = 'INSERT OR IGNORE INTO admins (username, password_hash) VALUES (?, ?)';
     db.run(sql, [username, hash], function(err) {
       if (err) {
-        console.error('Error creating admin:', err.message);
-        console.error('SQL statement:', sql);
-        console.error('Username:', username);
+        error('创建管理员时出错:', {
+          message: err.message,
+          sql: sql,
+          username: username
+        });
         db.close();
         process.exit(1);
       } else {
         if (this.changes > 0) {
-          console.log(`Admin account created successfully: ${username}`);
+          info(`管理员账户创建成功: ${username}`);
         } else {
-          console.log(`Admin account already exists: ${username}`);
+          info(`管理员账户已存在: ${username}`);
         }
         db.close();
       }

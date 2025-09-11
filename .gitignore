@@ -10,6 +10,7 @@ database/*.db
 
 # 日志文件
 *.log
+logs/
 
 # 环境变量文件
 .env

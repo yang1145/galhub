@@ -3,6 +3,7 @@ const path = require('path');
 const dbPath = path.join(__dirname, 'games.db');
 const fs = require('fs');
 const bcrypt = require('bcryptjs');
+const { info, error } = require('../log');
 
 // 确保database目录存在
 const dbDir = path.dirname(dbPath);
@@ -13,93 +14,86 @@ if (!fs.existsSync(dbDir)) {
 // 创建数据库连接
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
-    console.error('Error opening database:', err.message);
-    console.error('Database path:', dbPath);
+    error('Error opening database:', {
+      message: err.message,
+      databasePath: dbPath
+    });
     process.exit(1);
   } else {
-    console.log('Connected to the SQLite database.');
+    info('Connected to the SQLite database.', { databasePath: dbPath });
   }
 });
 
 // 创建游戏表
-db.serialize(() => {
-  // 创建games表
-  db.run(`CREATE TABLE IF NOT EXISTS games (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    alias TEXT,
-    cover_link TEXT,
-    game_address TEXT,
-    add_time DATETIME DEFAULT CURRENT_TIMESTAMP,
-    author TEXT,
-    is_commercial BOOLEAN DEFAULT 0,
-    is_repost BOOLEAN DEFAULT 0,
-    is_maintained BOOLEAN DEFAULT 1
-  )`, (err) => {
-    if (err) {
-      console.error('Error creating games table:', err.message);
-      console.error('SQL statement:', `CREATE TABLE IF NOT EXISTS games (...)`);
-      process.exit(1);
-    } else {
-      console.log('Games table created or already exists.');
-    }
-  });
-  
-  // 创建管理员表
-  db.run(`CREATE TABLE IF NOT EXISTS admins (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  )`, (err) => {
-    if (err) {
-      console.error('Error creating admins table:', err.message);
-      console.error('SQL statement:', `CREATE TABLE IF NOT EXISTS admins (...)`);
-      process.exit(1);
-    } else {
-      console.log('Admins table created or already exists.');
-      
-      // 检查是否已存在默认管理员账户
-      db.get("SELECT COUNT(*) as count FROM admins", [], (err, row) => {
-        if (err) {
-          console.error('Error checking existing admins:', err.message);
-          process.exit(1);
-        } else if (row.count === 0) {
-          // 创建默认管理员账户 (admin/admin123)
-          bcrypt.hash('admin123', 10, (err, hash) => {
-            if (err) {
-              console.error('Error hashing default admin password:', err.message);
-              process.exit(1);
-            } else {
-              db.run("INSERT INTO admins (username, password_hash) VALUES (?, ?)", 
-                ['admin', hash], 
-                (err) => {
-                  if (err) {
-                    console.error('Error creating default admin:', err.message);
-                    process.exit(1);
-                  } else {
-                    console.log('Default admin account created (admin/admin123)');
-                  }
+db.run(`CREATE TABLE IF NOT EXISTS games (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  alias TEXT,
+  cover_link TEXT,
+  game_address TEXT,
+  add_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+  author TEXT,
+  is_commercial BOOLEAN DEFAULT 0,
+  is_repost BOOLEAN DEFAULT 0,
+  is_maintained BOOLEAN DEFAULT 1
+)`, (err) => {
+  if (err) {
+    error('Error creating games table:', {
+      message: err.message,
+      sql: 'CREATE TABLE IF NOT EXISTS games (...)'
+    });
+    process.exit(1);
+  } else {
+    info('Games table created or already exists.');
+  }
+});
+
+// 创建管理员表
+db.run(`CREATE TABLE IF NOT EXISTS admins (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+)`, (err) => {
+  if (err) {
+    error('Error creating admins table:', {
+      message: err.message,
+      sql: 'CREATE TABLE IF NOT EXISTS admins (...)'
+    });
+    process.exit(1);
+  } else {
+    info('Admins table created or already exists.');
+    
+    // 检查是否已存在默认管理员账户
+    db.get("SELECT COUNT(*) as count FROM admins", [], (err, row) => {
+      if (err) {
+        error('Error checking existing admins:', { message: err.message });
+        process.exit(1);
+      } else if (row.count === 0) {
+        // 创建默认管理员账户 (admin/admin123)
+        bcrypt.hash('admin123', 10, (err, hash) => {
+          if (err) {
+            error('Error hashing default admin password:', { message: err.message });
+            process.exit(1);
+          } else {
+            db.run("INSERT INTO admins (username, password_hash) VALUES (?, ?)", 
+              ['admin', hash], 
+              (err) => {
+                if (err) {
+                  error('Error creating default admin:', { message: err.message });
+                  process.exit(1);
+                } else {
+                  info('Default admin account created (admin/admin123)');
                 }
-              );
-            }
-          });
-        } else {
-          console.log('Admin account(s) already exist, skipping default admin creation.');
-        }
-      });
-    }
-  });
-  
-  // 关闭数据库连接
-  db.close((err) => {
-    if (err) {
-      console.error('Error closing database:', err.message);
-      process.exit(1);
-    } else {
-      console.log('Database initialized and connection closed.');
-    }
-  });
+              }
+            );
+          }
+        });
+      } else {
+        info('Admin account(s) already exist, skipping default admin creation.');
+      }
+    });
+  }
 });
 
 // 插入一些示例数据
@@ -172,53 +166,52 @@ const defaultAdmin = {
   password: "admin123"
 };
 
-db.serialize(() => {
-  const stmt = db.prepare(`INSERT OR IGNORE INTO games 
-    (name, alias, cover_link, game_address, author, is_commercial, is_repost, is_maintained) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
-  
-  sampleGames.forEach(game => {
-    stmt.run([
-      game.name,
-      game.alias,
-      game.cover_link,
-      game.game_address,
-      game.author,
-      game.is_commercial ? 1 : 0,
-      game.is_repost ? 1 : 0,
-      game.is_maintained ? 1 : 0
-    ]);
-  });
-  
-  stmt.finalize();
-  
-  // 创建默认管理员账户
-  bcrypt.hash(defaultAdmin.password, 10, (err, hash) => {
-    if (err) {
-      console.error('Error hashing default admin password:', err.message);
-    } else {
-      const adminStmt = db.prepare('INSERT OR IGNORE INTO admins (username, password_hash) VALUES (?, ?)');
-      adminStmt.run([defaultAdmin.username, hash], function(err) {
-        if (err) {
-          console.error('Error creating default admin:', err.message);
+const stmt = db.prepare(`INSERT OR IGNORE INTO games 
+  (name, alias, cover_link, game_address, author, is_commercial, is_repost, is_maintained) 
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
+
+sampleGames.forEach(game => {
+  stmt.run([
+    game.name,
+    game.alias,
+    game.cover_link,
+    game.game_address,
+    game.author,
+    game.is_commercial ? 1 : 0,
+    game.is_repost ? 1 : 0,
+    game.is_maintained ? 1 : 0
+  ]);
+});
+
+stmt.finalize();
+
+// 创建默认管理员账户
+bcrypt.hash(defaultAdmin.password, 10, (err, hash) => {
+  if (err) {
+    error('Error hashing default admin password:', { message: err.message });
+  } else {
+    const adminStmt = db.prepare('INSERT OR IGNORE INTO admins (username, password_hash) VALUES (?, ?)');
+    adminStmt.run([defaultAdmin.username, hash], function(err) {
+      if (err) {
+        error('Error creating default admin:', { message: err.message });
+      } else {
+        if (this.changes > 0) {
+          info(`Default admin account created: ${defaultAdmin.username}/${defaultAdmin.password}`);
         } else {
-          if (this.changes > 0) {
-            console.log(`Default admin account created: ${defaultAdmin.username}/${defaultAdmin.password}`);
-          } else {
-            console.log('Default admin account already exists');
-          }
+          info('Default admin account already exists');
         }
-      });
-      adminStmt.finalize();
-    }
-  });
+      }
+    });
+    adminStmt.finalize();
+  }
 });
 
 // 关闭数据库连接
 db.close((err) => {
   if (err) {
-    console.error('Error closing database:', err.message);
+    error('Error closing database:', { message: err.message });
+    process.exit(1);
   } else {
-    console.log('Database connection closed.');
+    info('Database initialized and connection closed.');
   }
 });
