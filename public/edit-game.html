@@ -161,6 +161,7 @@
     <div class="container">
         <div class="header">
             <h1>编辑游戏</h1>
+            <a href="/admin/dashboard" class="btn btn-secondary">返回管理面板</a>
         </div>
         
         <div id="notification" class="notification hidden"></div>
@@ -199,20 +200,19 @@
                 <label>游戏属性</label>
                 <div class="checkbox-group">
                     <label>
-                        <input type="checkbox" id="editIsCommercial"> 商业游戏
+                        <input type="checkbox" id="editGameIsCommercial"> 商业游戏
                     </label>
                     <label>
-                        <input type="checkbox" id="editIsRepost"> 转载
+                        <input type="checkbox" id="editGameIsRepost"> 转载
                     </label>
                     <label>
-                        <input type="checkbox" id="editIsMaintained"> 维护中
+                        <input type="checkbox" id="editGameIsMaintained" checked> 维护中
                     </label>
                 </div>
             </div>
             
             <div class="actions">
-                <button type="button" class="btn btn-secondary" id="cancelBtn">取消</button>
-                <button type="button" class="btn btn-danger" id="deleteGameBtn">删除游戏</button>
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='/admin/dashboard'">取消</button>
                 <button type="submit" class="btn">保存游戏</button>
             </div>
         </form>
@@ -327,9 +327,9 @@
                     document.getElementById('editGameCoverLink').value = game.cover_link || '';
                     document.getElementById('editGameAddress').value = game.game_address || '';
                     document.getElementById('editGameAuthor').value = game.author || '';
-                    document.getElementById('editIsCommercial').checked = game.is_commercial == 1;
-                    document.getElementById('editIsRepost').checked = game.is_repost == 1;
-                    document.getElementById('editIsMaintained').checked = game.is_maintained == 1;
+                    document.getElementById('editGameIsCommercial').checked = game.is_commercial == 1;
+                    document.getElementById('editGameIsRepost').checked = game.is_repost == 1;
+                    document.getElementById('editGameIsMaintained').checked = game.is_maintained == 1;
                 } else if (response.status === 401 || response.status === 403) {
                     // 令牌无效或过期，重定向到登录页面
                     localStorage.removeItem('adminToken');
@@ -367,9 +367,9 @@
                 cover_link: document.getElementById('editGameCoverLink').value,
                 game_address: document.getElementById('editGameAddress').value,
                 author: document.getElementById('editGameAuthor').value,
-                is_commercial: document.getElementById('editIsCommercial').checked,
-                is_repost: document.getElementById('editIsRepost').checked,
-                is_maintained: document.getElementById('editIsMaintained').checked
+                is_commercial: document.getElementById('editGameIsCommercial').checked,
+                is_repost: document.getElementById('editGameIsRepost').checked,
+                is_maintained: document.getElementById('editGameIsMaintained').checked
             };
             
             try {

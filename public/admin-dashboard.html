@@ -273,7 +273,7 @@
             const token = localStorage.getItem('adminToken');
             if (!token) {
                 console.log('未找到认证令牌，重定向到登录页面');
-                window.location.assign('/admin/login');
+                window.location.href = '/admin/login';
                 return;
             }
             
@@ -288,7 +288,7 @@
                 if (response.status === 401 || response.status === 403) {
                     console.log('令牌无效，清除令牌并重定向到登录页面');
                     localStorage.removeItem('adminToken');
-                    window.location.assign('/admin/login');
+                    window.location.href = '/admin/login';
                 } else {
                     console.log('令牌有效，继续加载页面');
                 }
