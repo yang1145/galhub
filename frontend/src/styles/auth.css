@@ -1,0 +1,123 @@
+@import './variables.css';
+
+.auth-page, .profile-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.auth-page .card, .profile-page .card {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--card-background);
+  box-shadow: var(--shadow);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  box-sizing: border-box;
+  background: var(--card-background);
+  color: var(--text-color);
+}
+
+.auth-page button[type="submit"] {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.auth-page .card p {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.player-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.info-item .label {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.info-item .value {
+  color: var(--text-secondary);
+}
+
+.recent-games-list {
+  overflow-x: auto;
+}
+
+.games-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  color: var(--text-color);
+}
+
+.games-table th,
+.games-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.games-table th {
+  background-color: var(--background-color);
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.games-table tr:hover {
+  background-color: var(--background-color);
+}
+
+.games-table .tag {
+  margin: 2px;
+}
+
+@media (max-width: 768px) {
+  .player-info {
+    grid-template-columns: 1fr;
+  }
+  
+  .games-table {
+    font-size: 0.9rem;
+  }
+  
+  .games-table th,
+  .games-table td {
+    padding: 8px 10px;
+  }
+}
