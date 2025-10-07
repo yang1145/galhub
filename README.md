@@ -1,5 +1,4 @@
 <div align="center">
-  <img alt="GalHub Logo" width="215" src="https://unpkg.com/@vbenjs/static-source@0.1.7/source/logo-v1.webp">
   <br>
   <br>
 
