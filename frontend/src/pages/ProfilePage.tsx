@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import { authService } from '../services/authService';
 import '../styles/main.css';
 
 interface Game {
@@ -15,13 +17,9 @@ interface ProfilePageProps {
 }
 
 const ProfilePage = ({ setCurrentPage }: ProfilePageProps) => {
-  // 玩家信息示例
-  const playerInfo = {
-    username: '张三',
-    joinDate: '2023-01-15',
-    totalPlayTime: 125,
-    favoriteGenre: '动作'
-  };
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   // 最近游玩的游戏
   const recentGames: Game[] = [
@@ -32,11 +30,52 @@ const ProfilePage = ({ setCurrentPage }: ProfilePageProps) => {
     { id: 5, name: '魂斗罗', description: '经典射击游戏', tags: ['动作', '射击'], image: '', playCount: 11450, lastPlayed: '2023-10-01 15:10' },
   ];
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('未登录');
+        }
+
+        const profileData = await authService.getProfile(token);
+        setUser(profileData.user);
+        setLoading(false);
+      } catch (err: any) {
+        setError(err.message || '获取用户信息失败');
+        setLoading(false);
+        
+        // 如果是认证错误，跳转到登录页
+        if (err.message === '未登录' || err.message.includes('token')) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          setCurrentPage('login');
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, [setCurrentPage]);
+
   const handlePlayGame = (gameId: number, gameName: string) => {
     // 这里应该是实际的游戏启动逻辑
     alert(`开始游玩 ${gameName}!`);
     console.log(`用户开始游玩游戏 ID: ${gameId}`);
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setCurrentPage('login');
+  };
+
+  if (loading) {
+    return <div className="profile-page"><div className="card">加载中...</div></div>;
+  }
+
+  if (error) {
+    return <div className="profile-page"><div className="card error-message">{error}</div></div>;
+  }
 
   return (
     <div className="profile-page">
@@ -45,20 +84,23 @@ const ProfilePage = ({ setCurrentPage }: ProfilePageProps) => {
         <div className="player-info">
           <div className="info-item">
             <span className="label">用户名:</span>
-            <span className="value">{playerInfo.username}</span>
+            <span className="value">{user?.username}</span>
           </div>
           <div className="info-item">
             <span className="label">注册日期:</span>
-            <span className="value">{playerInfo.joinDate}</span>
+            <span className="value">{user?.created_at ? new Date(user.created_at).toLocaleDateString() : ''}</span>
           </div>
           <div className="info-item">
             <span className="label">总游戏时长:</span>
-            <span className="value">{playerInfo.totalPlayTime} 小时</span>
+            <span className="value">0 小时</span>
           </div>
           <div className="info-item">
             <span className="label">最喜欢的游戏类型:</span>
-            <span className="value">{playerInfo.favoriteGenre}</span>
+            <span className="value">动作</span>
           </div>
+        </div>
+        <div className="profile-actions">
+          <button className="logout-button" onClick={handleLogout}>退出登录</button>
         </div>
       </div>
 

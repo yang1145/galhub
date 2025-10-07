@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { authService } from '../services/authService';
 import '../styles/main.css';
 
 interface LoginPageProps {
@@ -6,30 +7,40 @@ interface LoginPageProps {
 }
 
 const LoginPage = ({ setCurrentPage }: LoginPageProps) => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // 登录逻辑处理
-    console.log('登录:', { email, password });
-    alert('登录功能演示');
-    // 登录成功后跳转到个人中心
-    setCurrentPage('profile');
+    try {
+      // 使用实际的API进行登录
+      const response = await authService.login({ username, password });
+      
+      // 保存token到localStorage
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('user', JSON.stringify(response.user));
+      
+      // 登录成功后跳转到个人中心
+      setCurrentPage('profile');
+    } catch (err: any) {
+      setError(err.message || '登录失败');
+    }
   };
 
   return (
     <div className="auth-page">
       <div className="card">
         <h2>用户登录</h2>
+        {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email">邮箱:</label>
+            <label htmlFor="username">用户名:</label>
             <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
