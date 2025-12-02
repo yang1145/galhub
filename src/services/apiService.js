@@ -1,7 +1,10 @@
 // API服务层 - 处理所有API请求
 
+// 导入API配置
+import { API_CONFIG } from '../config/api.js';
+
 // 基础URL
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = API_CONFIG.BASE_URL;
 
 // 通用请求方法
 async function request(endpoint, options = {}) {

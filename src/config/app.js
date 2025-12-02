@@ -2,9 +2,9 @@
 
 export const APP_CONFIG = {
   // 应用基本信息
-  NAME: 'GalHub',
-  VERSION: '0.0.0',
-  DESCRIPTION: '游戏展示平台',
+  NAME: import.meta.env.VITE_APP_NAME || 'GalHub',
+  VERSION: import.meta.env.VITE_APP_VERSION || '0.0.0',
+  DESCRIPTION: import.meta.env.VITE_APP_DESCRIPTION || '游戏展示平台',
   AUTHOR: 'GalHub Team',
   
   // 路由配置
