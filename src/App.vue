@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import Layout from './components/Layout.vue';
+import Layout from './components/business/Layout.vue';
 
 // 获取当前路由信息
 const route = useRoute();

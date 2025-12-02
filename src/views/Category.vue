@@ -3,5 +3,5 @@
 </template>
 
 <script setup>
-import Category from '../components/Category.vue';
+import Category from '../components/business/Category.vue';
 </script>

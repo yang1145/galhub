@@ -60,8 +60,8 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { games } from '../data/games.js';
-import GameCard from './GameCard.vue';
+import { games } from '../../data/games.js';
+import GameCard from '../ui/GameCard.vue';
 
 // 计算每个分类的游戏数量
 const getCategoryCount = (categoryName) => {

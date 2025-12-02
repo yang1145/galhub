@@ -34,7 +34,7 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import GameCard from '../components/GameCard.vue';
+import GameCard from '../components/ui/GameCard.vue';
 import { apiService } from '../services/apiService';
 
 // 从路由参数获取搜索查询

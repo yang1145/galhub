@@ -34,7 +34,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import GameCard from '../components/GameCard.vue';
+import GameCard from '../components/ui/GameCard.vue';
 import { apiService } from '../services/apiService';
 
 // 游戏数据

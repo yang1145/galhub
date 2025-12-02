@@ -1,9 +1,9 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import Login from './Login.vue';
-import Register from './Register.vue';
-import { apiService } from '../services/apiService';
+import Login from '../ui/Login.vue';
+import Register from '../ui/Register.vue';
+import { apiService } from '../../services/apiService';
 
 // 用户信息
 const user = ref(null);
@@ -129,10 +129,6 @@ onMounted(async () => {
     <!-- 导航栏 -->
     <nav class="navbar">
       <div class="navbar-container">
-        <!-- Logo和标题 -->
-        <div class="navbar-brand">
-          <h1 class="app-title">游戏展示平台</h1>
-        </div>
         
         <!-- 桌面导航菜单 -->
         <ul class="nav-menu">
