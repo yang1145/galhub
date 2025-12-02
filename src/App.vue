@@ -6,13 +6,29 @@ import GameCard from './components/GameCard.vue';
 import Layout from './components/Layout.vue';
 import About from './components/About.vue';
 import Category from './components/Category.vue';
+import GameDetail from './components/GameDetail.vue';
 
 // 页面状态管理
 const currentPage = ref('home');
+// 选中的游戏
+const selectedGame = ref(null);
 
 // 切换页面
 const navigateTo = (page) => {
   currentPage.value = page;
+  selectedGame.value = null; // 清除选中的游戏
+};
+
+// 选择游戏
+const selectGame = (game) => {
+  selectedGame.value = game;
+  currentPage.value = 'detail'; // 切换到详情页
+};
+
+// 返回列表
+const goBack = () => {
+  selectedGame.value = null;
+  currentPage.value = 'home'; // 返回到首页
 };
 </script>
 
@@ -24,8 +40,16 @@ const navigateTo = (page) => {
         v-for="game in games" 
         :key="game.id" 
         :game="game"
+        @select="selectGame"
       />
     </div>
+    
+    <!-- 游戏详情页 -->
+    <GameDetail 
+      v-else-if="currentPage === 'detail'" 
+      :game="selectedGame"
+      @go-back="goBack"
+    />
     
     <!-- 分类页面 -->
     <Category v-else-if="currentPage === 'category'" />

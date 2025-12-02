@@ -13,7 +13,7 @@
         </div>
       </div>
       <p class="game-description">{{ game.description }}</p>
-      <button class="game-button">了解更多</button>
+      <button class="game-button" @click="selectGame">了解更多</button>
     </div>
   </div>
 </template>
@@ -26,6 +26,14 @@ const props = defineProps({
     required: true
   }
 });
+
+// 定义事件
+const emit = defineEmits(['select']);
+
+// 选择游戏
+const selectGame = () => {
+  emit('select', props.game);
+};
 </script>
 
 <style scoped>
