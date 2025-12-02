@@ -1,34 +1,24 @@
-# 依赖目录
-node_modules/
-npm-debug.log
-
-# 数据库文件
-database/*.db
-!database/init.js
-!database/init-users.js
-!database/create-admin.js
-
-# 日志文件
+# Logs
+logs
 *.log
-logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# 环境变量文件
-.env
-.env.local
-.env.*.local
+node_modules
+dist
+dist-ssr
+*.local
 
-# 编辑器和操作系统文件
-.vscode/
-.idea/
-*.swp
-*.swo
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
-Thumbs.db
-
-# npm相关
-package-lock.json
-yarn.lock
-
-# 可选：如果不想公开管理员账户信息，可以忽略初始化脚本
-# database/create-admin.js
-# database/init.js
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

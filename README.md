@@ -1,177 +1,83 @@
-<div align="center">
-  <br>
-  <br>
+# GalHub 游戏展示平台
 
-[![license](https://img.shields.io/github/license/anncwb/vue-vben-admin.svg)](LICENSE)
-
-  <h1>GalHub 游戏平台</h1>
-</div>
-
-**中文** | [English](./README.md)
-
-## 简介
-
-GalHub 是一个现代化的游戏平台，采用前后端分离架构。前端使用 Vue 3、Vite、TypeScript 等主流技术开发，后端使用 Node.js、Express 和 MySQL 构建。
-
-## 项目结构
-
-```
-galhub/
-├── admin/              # 基于 Vben Admin 的后台管理系统
-├── backend/            # Node.js 后端 API 服务
-├── frontend/           # React 前端用户界面
-└── README.md           # 项目说明文档
-```
-
-## 技术栈
-
-### 前端 (admin & frontend)
-- **框架**: Vue 3 / React
-- **构建工具**: Vite
-- **语言**: TypeScript
-- **UI库**: Ant Design Vue / 其他组件库
-- **状态管理**: Pinia / Redux
-- **路由**: Vue Router / React Router
-
-### 后端
-- **框架**: Node.js + Express
-- **数据库**: MySQL
-- **ORM**: Sequelize
-- **认证**: JWT
-- **密码加密**: bcryptjs
+一个现代化的游戏展示平台，使用Vue 3和Vite构建。
 
 ## 功能特性
 
-- 用户认证（注册、登录）
-- 管理员认证与权限控制
-- 游戏管理（增删改查）
-- 用户最近游戏跟踪
-- RESTful API 设计
-- 响应式前端界面
+- 首页展示所有游戏
+- 分类页面按类型浏览游戏
+- 关于页面介绍平台信息
+- 响应式设计，适配各种设备
+- 美观的UI界面和流畅的用户体验
 
-## 安装使用
+## 技术栈
 
-### 后端服务
+- Vue 3 (Composition API)
+- Vite
+- Font Awesome 图标库
+- CSS Grid 和 Flexbox 布局
 
-1. 进入后端目录：
-   ```bash
-   cd backend
-   ```
+## 页面介绍
 
-2. 安装依赖：
-   ```bash
-   npm install
-   ```
+### 首页
+展示所有游戏的网格布局，每个游戏卡片包含标题、评分、描述和图片。
 
-3. 根据 `.env.example` 创建 `.env` 文件并配置环境变量：
-   ```bash
-   cp .env.example .env
-   ```
+### 分类页面
+按游戏类型组织的分类浏览页面：
+- 冒险
+- 动作
+- 策略
+- 角色扮演
+- 竞速
+- 模拟
 
-4. 创建数据库并运行初始化脚本：
-   ```sql
-   CREATE DATABASE galhub;
-   ```
-   ```bash
-   mysql -u your_username -p galhub < init.sql
-   ```
+每个分类都有专门的图标和游戏计数，用户可以点击分类查看该类型的所有游戏。
 
-5. 运行后端服务：
-   ```bash
-   # 开发模式
-   npm run dev
-   
-   # 生产模式
-   npm start
-   ```
+### 关于页面
+平台介绍、团队信息和联系方式。
 
-### 前端管理后台
+## 开发指南
 
-1. 进入前端管理后台目录：
-   ```bash
-   cd admin
-   ```
+### 安装依赖
+```bash
+npm install
+```
 
-2. 安装依赖（使用pnpm）：
-   ```bash
-   npm i -g corepack
-   pnpm install
-   ```
+### 启动开发服务器
+```bash
+npm run dev
+```
 
-3. 运行开发服务器：
-   ```bash
-   pnpm dev
-   ```
+### 构建生产版本
+```bash
+npm run build
+```
 
-4. 打包构建：
-   ```bash
-   pnpm build
-   ```
+## 组件结构
 
-### 前端用户界面
+- `App.vue` - 主应用组件
+- `Layout.vue` - 页面布局组件（包含导航和页脚）
+- `GameCard.vue` - 游戏卡片组件
+- `Category.vue` - 分类页面组件
+- `About.vue` - 关于页面组件
 
-1. 进入前端用户界面目录：
-   ```bash
-   cd frontend
-   ```
+## 数据结构
 
-2. 安装依赖：
-   ```bash
-   npm install
-   ```
+游戏数据存储在 `src/data/games.js` 中，每个游戏对象包含以下属性：
+- id: 唯一标识符
+- title: 游戏标题
+- genre: 游戏类型
+- rating: 评分
+- image: 图片URL
+- description: 描述
 
-3. 运行开发服务器：
-   ```bash
-   npm run dev
-   ```
+## 自定义和扩展
 
-4. 打包构建：
-   ```bash
-   npm run build
-   ```
-
-## API 文档
-
-详细的 API 文档请查看 [backend/README.md](./backend/README.md)
-
-## 浏览器支持
-
-本地开发推荐使用 `Chrome 80+` 浏览器
-
-支持现代浏览器，不支持 IE
-
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
-| :-: | :-: | :-: | :-: |
-| last 2 versions | last 2 versions | last 2 versions | last 2 versions |
-
-## 如何贡献
-
-非常欢迎你的加入！
-
-**Pull Request 流程：**
-
-1. Fork 代码
-2. 创建自己的分支：`git checkout -b feature/xxxx`
-3. 提交你的修改：`git commit -am 'feat(function): add xxxxx'`
-4. 推送您的分支：`git push origin feature/xxxx`
-5. 提交 `pull request`
-
-## Git 贡献提交规范
-
-参考 [Angular 规范](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular)
-
-- `feat` 增加新功能
-- `fix` 修复问题/BUG
-- `style` 代码风格相关无影响运行结果的
-- `perf` 优化/性能提升
-- `refactor` 重构
-- `revert` 撤销修改
-- `test` 测试相关
-- `docs` 文档/注释
-- `chore` 依赖更新/脚手架配置修改等
-- `ci` 持续集成
-- `types` 类型定义文件更改
+1. 添加新游戏：编辑 `src/data/games.js` 文件
+2. 添加新分类：更新 `Category.vue` 组件中的分类数据
+3. 修改样式：编辑各组件的 `<style scoped>` 部分
+4. 添加页面：创建新组件并在 `App.vue` 中注册和引用
 
 ## 许可证
 
-[MIT](./LICENSE)
+MIT
