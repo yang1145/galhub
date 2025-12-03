@@ -22,18 +22,18 @@ export const APP_CONFIG = {
   THEME: {
     // 颜色配置
     COLORS: {
-      PRIMARY: '#3498db',
-      SECONDARY: '#2ecc71',
-      ACCENT: '#e74c3c',
-      BACKGROUND: '#f5f5f5',
+      PRIMARY: '#ff69b4',
+      SECONDARY: '#ffb6c1',
+      ACCENT: '#ff1493',
+      BACKGROUND: '#ffffff',
       SURFACE: '#ffffff',
       TEXT: '#2c3e50',
       TEXT_LIGHT: '#7f8c8d',
-      BORDER: '#e0e0e0',
+      BORDER: '#ffe4e1',
       ERROR: '#e74c3c',
       SUCCESS: '#2ecc71',
       WARNING: '#f39c12',
-      INFO: '#3498db'
+      INFO: '#ff69b4'
     },
     
     // 字体配置

@@ -373,7 +373,7 @@ onMounted(async () => {
   font-size: 1.9rem;
   font-weight: 700;
   color: #2c3e50;
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -428,10 +428,10 @@ onMounted(async () => {
 
 /* 导航链接悬停效果 */
 .nav-link:hover {
-  color: #3498db;
-  background-color: rgba(52, 152, 219, 0.08);
+  color: #ff69b4;
+  background-color: rgba(255, 105, 180, 0.08);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15);
 }
 
 .nav-link:hover i {
@@ -441,8 +441,8 @@ onMounted(async () => {
 /* 导航链接激活状态 */
 .nav-link.active {
   color: #ffffff;
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.25);
+  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.25);
 }
 
 /* 导航链接底部指示器 */
@@ -454,7 +454,7 @@ onMounted(async () => {
   transform: translateX(-50%);
   width: 0;
   height: 2px;
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
   transition: width 0.3s ease;
   border-radius: 1px;
 }
@@ -525,9 +525,9 @@ onMounted(async () => {
 }
 
 .search-btn:hover {
-  background: linear-gradient(135deg, #2980b9 0%, #1c5a85 100%);
+  background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
 }
 
 /* 用户操作区 */
@@ -561,28 +561,28 @@ onMounted(async () => {
 /* 登录按钮样式 */
 .login-btn {
   background-color: transparent;
-  color: #3498db;
-  border-color: #3498db;
+  color: #ff69b4;
+  border-color: #ff69b4;
 }
 
 .login-btn:hover {
-  background-color: rgba(52, 152, 219, 0.08);
+  background-color: rgba(255, 105, 180, 0.08);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15);
 }
 
 /* 注册按钮样式 */
 .register-btn {
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
   color: white;
-  border-color: #3498db;
+  border-color: #ff69b4;
 }
 
 .register-btn:hover {
-  background: linear-gradient(135deg, #2980b9 0%, #1c5a85 100%);
+  background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(52, 152, 219, 0.25);
-  border-color: #2980b9;
+  box-shadow: 0 4px 16px rgba(255, 105, 180, 0.25);
+  border-color: #ff1493;
 }
 
 /* 用户菜单样式 */
@@ -602,9 +602,9 @@ onMounted(async () => {
 
 .user-menu:hover {
   background-color: #ffffff;
-  border-color: #3498db;
+  border-color: #ff69b4;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15);
 }
 
 .user-profile {
@@ -617,7 +617,7 @@ onMounted(async () => {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
   color: white;
   display: flex;
   align-items: center;
@@ -625,13 +625,13 @@ onMounted(async () => {
   font-size: 1.1rem;
   font-weight: 700;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.25);
+  box-shadow: 0 2px 8px rgba(255, 105, 180, 0.25);
   border: 2px solid transparent;
 }
 
 .user-menu:hover .user-avatar {
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.35);
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.35);
 }
 
 .username {
@@ -643,7 +643,7 @@ onMounted(async () => {
 }
 
 .user-menu:hover .username {
-  color: #3498db;
+  color: #ff69b4;
 }
 
 .dropdown-icon {
@@ -655,7 +655,7 @@ onMounted(async () => {
 
 .user-menu:hover .dropdown-icon {
   transform: rotate(180deg) scale(1.1);
-  color: #3498db;
+  color: #ff69b4;
 }
 
 /* 下拉菜单样式 */
@@ -722,13 +722,13 @@ onMounted(async () => {
 }
 
 .dropdown-item:hover {
-  background-color: rgba(52, 152, 219, 0.08);
-  color: #3498db;
+  background-color: rgba(255, 105, 180, 0.08);
+  color: #ff69b4;
   padding-left: 1.5rem;
 }
 
 .dropdown-item:hover i {
-  color: #3498db;
+  color: #ff69b4;
   transform: translateX(3px);
 }
 
@@ -793,7 +793,7 @@ main {
 }
 
 .footer-section h3 {
-  color: #3498db;
+  color: #ff69b4;
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
   font-weight: 600;
@@ -808,7 +808,7 @@ main {
   left: 0;
   width: 50px;
   height: 2px;
-  background-color: #3498db;
+  background-color: #ff69b4;
   border-radius: 1px;
   transition: width 0.3s ease;
 }
@@ -818,7 +818,7 @@ main {
 }
 
 .footer-section h4 {
-  color: #3498db;
+  color: #ff69b4;
   margin-bottom: 1.5rem;
   font-size: 1.2rem;
   font-weight: 600;
@@ -833,7 +833,7 @@ main {
   left: 0;
   width: 40px;
   height: 2px;
-  background-color: #3498db;
+  background-color: #ff69b4;
   border-radius: 1px;
   transition: width 0.3s ease;
 }
@@ -877,9 +877,9 @@ main {
 }
 
 .social-icon:hover {
-  background-color: #3498db;
+  background-color: #ff69b4;
   transform: translateY(-4px) scale(1.1);
-  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
 }
 
 .footer-links {
@@ -908,11 +908,11 @@ main {
   left: -15px;
   opacity: 0;
   transition: all 0.3s ease;
-  color: #3498db;
+  color: #ff69b4;
 }
 
 .footer-links a:hover {
-  color: #3498db;
+  color: #ff69b4;
   padding-left: 10px;
 }
 
@@ -950,9 +950,9 @@ main {
 
 .newsletter-input:focus {
   outline: none;
-  border-color: #3498db;
+  border-color: #ff69b4;
   background-color: #2c3e50;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
 }
 
 .newsletter-input::placeholder {
@@ -960,7 +960,7 @@ main {
 }
 
 .newsletter-button {
-  background-color: #3498db;
+  background-color: #ff69b4;
   color: white;
   border: none;
   border-radius: 25px;
@@ -968,14 +968,14 @@ main {
   cursor: pointer;
   font-weight: 600;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(52, 152, 219, 0.2);
+  box-shadow: 0 2px 5px rgba(255, 105, 180, 0.2);
   min-width: 100px;
 }
 
 .newsletter-button:hover {
-  background-color: #2980b9;
+  background-color: #ff1493;
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
 }
 
 .footer-bottom {
@@ -1020,12 +1020,12 @@ main {
   left: 0;
   width: 0;
   height: 1px;
-  background-color: #3498db;
+  background-color: #ff69b4;
   transition: width 0.3s ease;
 }
 
 .footer-extra-links a:hover {
-  color: #3498db;
+  color: #ff69b4;
 }
 
 .footer-extra-links a:hover::after {

@@ -205,8 +205,8 @@ const handleRegister = () => {
 
 .form-input:focus {
   outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
 }
 
 .error-message {
@@ -219,7 +219,7 @@ const handleRegister = () => {
 }
 
 .auth-button {
-  background-color: #3498db;
+  background-color: #ff69b4;
   color: white;
   border: none;
   border-radius: 4px;
@@ -235,7 +235,7 @@ const handleRegister = () => {
 }
 
 .auth-button:hover {
-  background-color: #2980b9;
+  background-color: #ff1493;
   transform: translateY(-2px);
 }
 
@@ -247,14 +247,14 @@ const handleRegister = () => {
 }
 
 .auth-link {
-  color: #3498db;
+  color: #ff69b4;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s ease;
 }
 
 .auth-link:hover {
-  color: #2980b9;
+  color: #ff1493;
   text-decoration: underline;
 }
 

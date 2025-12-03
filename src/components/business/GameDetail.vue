@@ -193,7 +193,7 @@ const goBack = () => {
 }
 
 .game-detail-genre {
-  background-color: #3498db;
+  background-color: #ff69b4;
   color: white;
   padding: 8px 16px;
   border-radius: 20px;
@@ -251,12 +251,12 @@ const goBack = () => {
 }
 
 .action-button.primary {
-  background-color: #3498db;
+  background-color: #ff69b4;
   color: white;
 }
 
 .action-button.primary:hover {
-  background-color: #2980b9;
+  background-color: #ff1493;
   transform: translateY(-2px);
 }
 

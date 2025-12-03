@@ -5,7 +5,7 @@
   
   /* 统一浅色主题 */
   color: #333333;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -65,19 +65,19 @@ p {
 
 .btn:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.25);
 }
 
 /* 主要按钮样式 */
 .btn-primary {
-  background-color: #3498db;
+  background-color: #ff69b4;
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: #2980b9;
+  background-color: #ff1493;
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
 }
 
 /* 次要按钮样式 */
@@ -139,7 +139,7 @@ p {
 
 /* 搜索按钮特殊样式 */
 .search-btn {
-  background-color: #3498db;
+  background-color: #ff69b4;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -149,13 +149,13 @@ p {
 }
 
 .search-btn:hover {
-  background-color: #2980b9;
+  background-color: #ff1493;
   transform: translateY(-1px);
 }
 
 /* 游戏卡片按钮样式 */
 .game-button {
-  background-color: #3498db;
+  background-color: #ff69b4;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -168,14 +168,14 @@ p {
 }
 
 .game-button:hover {
-  background-color: #2980b9;
+  background-color: #ff1493;
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
 }
 
 /* 订阅按钮样式 */
 .newsletter-button {
-  background-color: #3498db;
+  background-color: #ff69b4;
   color: white;
   border: none;
   border-radius: 25px;
@@ -183,13 +183,13 @@ p {
   cursor: pointer;
   font-weight: 600;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(52, 152, 219, 0.2);
+  box-shadow: 0 2px 5px rgba(255, 105, 180, 0.2);
 }
 
 .newsletter-button:hover {
-  background-color: #2980b9;
+  background-color: #ff1493;
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
 }
 
 

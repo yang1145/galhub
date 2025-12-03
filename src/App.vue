@@ -78,7 +78,7 @@ watch(route, (newRoute) => {
   width: 50px;
   height: 50px;
   border: 4px solid #e2e8f0;
-  border-top-color: #3498db;
+  border-top-color: #ff69b4;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

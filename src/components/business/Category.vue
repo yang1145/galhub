@@ -185,13 +185,13 @@ onUnmounted(() => {
 .category-card.active {
   transform: translateY(-5px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: #3498db;
+  border-color: #ff69b4;
 }
 
 .category-icon {
   font-size: 2.5rem;
   margin-bottom: 16px;
-  color: #3498db;
+  color: #ff69b4;
 }
 
 .category-card h3 {
@@ -246,7 +246,7 @@ onUnmounted(() => {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: #3498db;
+  background-color: #ff69b4;
   color: white;
   border: none;
   cursor: pointer;
@@ -256,7 +256,7 @@ onUnmounted(() => {
 }
 
 .back-to-top:hover {
-  background-color: #2980b9;
+  background-color: #ff1493;
   transform: translateY(-3px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
