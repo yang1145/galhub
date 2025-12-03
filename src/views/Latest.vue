@@ -44,20 +44,19 @@ const error = ref('');
 
 // 加载最新游戏数据
 const loadLatestGames = async () => {
-  try {
-    isLoading.value = true;
-    error.value = '';
-    const response = await apiService.games.getGames();
-    // 假设API返回的是按时间排序的游戏列表，或者在这里添加排序逻辑
-    games.value = response.data;
-  } catch (err) {
-    console.error('Failed to load latest games:', err);
-    error.value = 'Failed to load latest games. Please try again later.';
-    games.value = [];
-  } finally {
-    isLoading.value = false;
-  }
-};
+    try {
+      isLoading.value = true;
+      error.value = '';
+      const response = await apiService.games.getLatestGames();
+      games.value = response.data;
+    } catch (err) {
+      console.error('Failed to load latest games:', err);
+      error.value = 'Failed to load latest games. Please try again later.';
+      games.value = [];
+    } finally {
+      isLoading.value = false;
+    }
+  };
 
 // 初始化数据
 onMounted(async () => {

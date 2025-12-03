@@ -101,6 +101,16 @@ export const apiService = {
       return request('/games');
     },
     
+    // 获取最新游戏
+    getLatestGames: async () => {
+      return request('/games/latest');
+    },
+    
+    // 获取热门游戏
+    getPopularGames: async () => {
+      return request('/games/popular');
+    },
+    
     // 创建新游戏（需要认证）
     createGame: async (gameData) => {
       return request('/games', {
@@ -123,6 +133,19 @@ export const apiService = {
         method: 'POST',
         body: JSON.stringify({ name: tagName }),
       });
+    },
+  },
+  
+  // 分类相关
+  categories: {
+    // 获取分类列表
+    getCategories: async () => {
+      return request('/categories');
+    },
+    
+    // 获取指定分类的游戏
+    getGamesByCategory: async (categoryId) => {
+      return request(`/categories/${categoryId}/games`);
     },
   },
   

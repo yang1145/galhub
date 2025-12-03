@@ -148,11 +148,11 @@ const handleRegister = () => {
 
 .auth-card {
   background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   padding: 2.5rem;
   width: 100%;
-  max-width: 400px;
+  max-width: 100%;
 }
 
 .auth-title {

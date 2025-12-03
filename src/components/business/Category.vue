@@ -5,10 +5,22 @@
       <p>浏览不同类型的精彩游戏</p>
     </div>
     
-    <div class="categories-grid">
+    <!-- 错误信息 -->
+    <div v-if="error" class="error-message">
+      {{ error }}
+    </div>
+    
+    <!-- 加载状态 -->
+    <div v-if="isLoading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>正在加载数据...</p>
+    </div>
+    
+    <!-- 分类列表 -->
+    <div v-else-if="categories.length > 0" class="categories-grid">
       <div 
         v-for="category in categories" 
-        :key="category.name"
+        :key="category.id || category.name"
         class="category-card"
         @click="filterByCategory(category.name)"
         :class="{ active: selectedCategory === category.name }"
@@ -17,33 +29,52 @@
           <font-awesome-icon :icon="category.icon" />
         </div>
         <h3>{{ category.name }}</h3>
-        <p>{{ category.count }} 款游戏</p>
+        <p>{{ category.count || 0 }} 款游戏</p>
       </div>
     </div>
     
-    <div class="filtered-games" v-if="selectedCategory">
+    <!-- 空状态 -->
+    <div v-else class="empty-state">
+      <h3>暂无分类数据</h3>
+      <p>请稍后重试或联系管理员</p>
+    </div>
+    
+    <!-- 筛选后的游戏 -->
+    <div v-if="selectedCategory && !isLoading" class="filtered-games">
       <h2>{{ selectedCategory }}游戏</h2>
-      <div class="games-grid">
+      <div v-if="filteredGames.length > 0" class="games-grid">
         <GameCard 
           v-for="game in filteredGames" 
           :key="game.id" 
           :game="game"
         />
       </div>
+      <div v-else class="empty-state">
+        <h3>该分类下暂无游戏</h3>
+        <p>请尝试其他分类或稍后重试</p>
+      </div>
       <button @click="clearFilter" class="btn btn-secondary">查看所有分类</button>
     </div>
     
-    <div class="all-games" v-else>
+    <!-- 所有游戏 -->
+    <div v-else-if="!isLoading" class="all-games">
       <h2>所有游戏</h2>
-      <div class="games-by-category" v-for="category in categories" :key="category.name">
+      <div v-if="categories.length > 0" class="games-by-category" v-for="category in categories" :key="category.id || category.name">
         <h3>{{ category.name }}</h3>
-        <div class="games-grid">
+        <div v-if="getGamesByCategory(category.name).length > 0" class="games-grid">
           <GameCard 
             v-for="game in getGamesByCategory(category.name)" 
             :key="game.id" 
             :game="game"
           />
         </div>
+        <div v-else class="empty-state">
+          <p>该分类下暂无游戏</p>
+        </div>
+      </div>
+      <div v-else class="empty-state">
+        <h3>暂无游戏数据</h3>
+        <p>请稍后重试或联系管理员</p>
       </div>
     </div>
     
@@ -59,40 +90,74 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { games } from '../../data/games.js';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { apiService } from '../../services/apiService';
 import GameCard from '../ui/GameCard.vue';
 
-// 计算每个分类的游戏数量
-const getCategoryCount = (categoryName) => {
-  return games.filter(game => game.genre === categoryName).length;
-};
-
 // 分类数据
-const categories = ref([
-  { name: '冒险', icon: ['fas', 'hat-cowboy'], count: getCategoryCount('冒险') },
-  { name: '动作', icon: ['fas', 'fist-raised'], count: getCategoryCount('动作') },
-  { name: '策略', icon: ['fas', 'chess'], count: getCategoryCount('策略') },
-  { name: '角色扮演', icon: ['fas', 'dragon'], count: getCategoryCount('角色扮演') },
-  { name: '竞速', icon: ['fas', 'car'], count: getCategoryCount('竞速') },
-  { name: '模拟', icon: ['fas', 'tractor'], count: getCategoryCount('模拟') }
-]);
-
+const categories = ref([]);
+// 所有游戏数据
+const allGames = ref([]);
 // 当前选中的分类
 const selectedCategory = ref('');
-
 // 是否显示返回顶部按钮
 const showBackToTop = ref(false);
+// 加载状态
+const isLoading = ref(false);
+// 错误信息
+const error = ref('');
+
+// 加载分类数据
+const loadCategories = async () => {
+  try {
+    isLoading.value = true;
+    error.value = '';
+    const response = await apiService.categories.getCategories();
+    // 为每个分类添加图标映射
+    const categoryIcons = {
+      '冒险': ['fas', 'hat-cowboy'],
+      '动作': ['fas', 'fist-raised'],
+      '策略': ['fas', 'chess'],
+      '角色扮演': ['fas', 'dragon'],
+      '竞速': ['fas', 'car'],
+      '模拟': ['fas', 'tractor']
+    };
+    categories.value = response.data.map(category => ({
+      ...category,
+      icon: categoryIcons[category.name] || ['fas', 'gamepad']
+    }));
+  } catch (err) {
+    console.error('加载分类失败:', err);
+    error.value = '加载分类失败，请稍后重试';
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+// 加载游戏数据
+const loadGames = async () => {
+  try {
+    isLoading.value = true;
+    error.value = '';
+    const response = await apiService.games.getGames();
+    allGames.value = response.data;
+  } catch (err) {
+    console.error('加载游戏失败:', err);
+    error.value = '加载游戏失败，请稍后重试';
+  } finally {
+    isLoading.value = false;
+  }
+};
 
 // 根据分类过滤游戏
 const filteredGames = computed(() => {
   if (!selectedCategory.value) return [];
-  return games.filter(game => game.genre === selectedCategory.value);
+  return allGames.value.filter(game => game.genre === selectedCategory.value);
 });
 
 // 获取指定分类的游戏
 const getGamesByCategory = (categoryName) => {
-  return games.filter(game => game.genre === categoryName);
+  return allGames.value.filter(game => game.genre === categoryName);
 };
 
 // 按分类筛选
@@ -120,8 +185,9 @@ const handleScroll = () => {
   showBackToTop.value = window.scrollY > 300;
 };
 
-// 组件挂载时添加滚动监听
-onMounted(() => {
+// 组件挂载时加载数据和添加滚动监听
+onMounted(async () => {
+  await Promise.all([loadCategories(), loadGames()]);
   window.addEventListener('scroll', handleScroll);
 });
 
@@ -261,6 +327,67 @@ onUnmounted(() => {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+/* 加载状态样式 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  gap: 16px;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #ff69b4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* 错误信息样式 */
+.error-message {
+  background-color: #fee2e2;
+  color: #dc2626;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin: 0 auto 30px;
+  max-width: 800px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.15);
+}
+
+/* 空状态样式 */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #fef2f2;
+  border: 2px dashed #fee2e2;
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.empty-state h3 {
+  color: #991b1b;
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  color: #b91c1c;
+  margin: 0;
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .category-container {
@@ -308,6 +435,25 @@ onUnmounted(() => {
     right: 20px;
     width: 40px;
     height: 40px;
+  }
+  
+  /* 移动端加载状态 */
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+  }
+  
+  /* 移动端错误信息 */
+  .error-message {
+    margin: 0 auto 20px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+  
+  /* 移动端空状态 */
+  .empty-state {
+    padding: 20px 15px;
+    margin: 15px 0;
   }
 }
 </style>

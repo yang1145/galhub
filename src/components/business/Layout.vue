@@ -201,16 +201,14 @@ onMounted(async () => {
               <a 
                 href="#" 
                 class="nav-link auth-btn login-btn" 
-                :class="{ active: currentPage === 'login' }"
-                @click.prevent="navigate('login')"
+                @click.prevent="openAuthModal(); isRegisterMode = false"
               >
                 <font-awesome-icon :icon="['fas', 'sign-in-alt']" /> 登录
               </a>
               <a 
                 href="#" 
                 class="nav-link auth-btn register-btn" 
-                :class="{ active: currentPage === 'register' }"
-                @click.prevent="navigate('register')"
+                @click.prevent="openAuthModal(); isRegisterMode = true"
               >
                 <font-awesome-icon :icon="['fas', 'user-plus']" /> 注册
               </a>
@@ -219,8 +217,8 @@ onMounted(async () => {
             <!-- 已登录用户菜单 -->
             <div v-if="isLoggedIn" class="user-menu">
               <div class="user-profile">
-                <div class="user-avatar">{{ currentUser?.username?.charAt(0).toUpperCase() || 'U' }}</div>
-                <span class="username">{{ currentUser?.username }}</span>
+                <div class="user-avatar">{{ user?.username?.charAt(0).toUpperCase() || 'U' }}</div>
+                <span class="username">{{ user?.username }}</span>
                 <font-awesome-icon :icon="['fas', 'caret-down']" class="dropdown-icon" />
               </div>
               <div class="dropdown-menu">
@@ -1049,9 +1047,9 @@ main {
 .modal-content {
   background-color: #fff;
   padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  max-width: 500px;
   width: 100%;
 }
 
