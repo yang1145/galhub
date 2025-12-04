@@ -38,6 +38,23 @@
 
 ## 开发指南
 
+### 环境要求
+项目需要 Node.js 版本 20.19.0 或更高版本。
+
+推荐使用 [nvm](https://github.com/nvm-sh/nvm) 或 [nvm-windows](https://github.com/coreybutler/nvm-windows) 管理 Node.js 版本：
+
+```bash
+# 使用 nvm 安装并切换到指定版本
+nvm install 20.19.0
+nvm use 20.19.0
+```
+
+或者使用 `.nvmrc` 文件：
+```bash
+# 自动使用项目推荐的版本
+nvm use
+```
+
 ### 安装依赖
 ```bash
 npm install
