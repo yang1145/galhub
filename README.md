@@ -53,6 +53,39 @@ npm run dev
 npm run build
 ```
 
+## 部署指南
+
+项目支持多种部署平台：
+
+### Vercel 部署
+1. 访问 [Vercel官网](https://vercel.com/) 并使用你的 GitHub 账户登录
+2. 点击 "Import Project" 导入你的项目仓库
+3. Vercel 会自动检测这是一个 Vite 项目并设置正确的构建命令 (`npm run build`)
+4. 设置输出目录为 `dist`
+5. 点击部署即可
+
+### Cloudflare Pages 部署
+1. 访问 [Cloudflare控制台](https://dash.cloudflare.com/) 并登录
+2. 进入 "Workers & Pages" 服务
+3. 点击 "Create application" > "Pages" > "Connect to Git"
+4. 选择你的 Git 仓库
+5. 设置构建配置：
+   - 构建命令: `npm run build`
+   - 输出目录: `dist`
+6. 点击 "Save and Deploy"
+
+### Netlify 部署
+1. 访问 [Netlify官网](https://app.netlify.com/) 并使用你的 GitHub 账户登录
+2. 点击 "New site from Git" 并选择你的项目仓库
+3. Netlify 会自动检测到 `netlify.toml` 配置文件并应用相应的设置
+4. 点击 "Deploy site" 即可完成部署
+
+### GitHub Pages 部署
+1. 确保你的项目已经在 GitHub 上
+2. 进入仓库的 Settings > Pages
+3. 在 "Build and deployment" 部分，选择 "GitHub Actions" 作为源
+4. 推送代码到 main 分支，GitHub Actions 会自动触发构建和部署流程
+
 ## 组件结构
 
 - `App.vue` - 主应用组件
