@@ -1,335 +1,132 @@
 <script setup>
+import { 
+  Gamepad2, 
+  Star, 
+  Users, 
+  Rocket, 
+  User, 
+  Mail, 
+  Phone, 
+  MapPin, 
+  Code2, 
+  Palette, 
+  PenTool 
+} from 'lucide-vue-next';
 </script>
 
 <template>
-  <div class="about-container">
-    <div class="about-header">
-      <h1>关于我们</h1>
-      <p class="about-subtitle">发现精彩游戏，享受快乐时光</p>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+    <!-- 头部区域 -->
+    <div class="text-center space-y-4">
+      <h1 class="text-4xl font-extrabold text-slate-800">关于我们</h1>
+      <p class="text-xl text-slate-500 max-w-2xl mx-auto">邂逅心动故事，邂逅美好时光</p>
     </div>
     
-    <div class="about-content">
-      <section class="about-section">
-        <h2>平台介绍</h2>
-        <p>游戏展示平台是一个专注于为玩家提供最新、最热门游戏资讯和下载服务的综合性平台。我们致力于打造一个安全、便捷、优质的游戏社区，让每一位玩家都能在这里找到自己喜爱的游戏。</p>
-        <p>无论是角色扮演、动作冒险、策略模拟还是休闲益智，我们都能为您提供丰富多样的游戏选择。</p>
-      </section>
+    <!-- 平台介绍 -->
+    <section class="bg-white rounded-3xl shadow-sm border border-slate-100 p-8 md:p-12">
+      <h2 class="text-2xl font-bold text-slate-800 mb-6 border-l-4 border-primary-500 pl-4">平台介绍</h2>
+      <div class="space-y-4 text-slate-600 leading-relaxed text-lg">
+        <p>GalHub 是一个专注于为玩家提供最新、最热门Galgame资讯和下载服务的综合性平台。我们致力于打造一个温馨、浪漫、优质的Galgame社区，让每一位玩家都能在这里邂逅属于自己的心动故事。</p>
+        <p>无论是纯爱、悬疑、奇幻还是日常系，我们都能为您提供丰富多样的Galgame选择，让您沉浸在动人的剧情与精美的画面之中。</p>
+      </div>
+    </section>
       
-      <section class="about-section">
-        <h2>我们的使命</h2>
-        <div class="mission-grid">
-          <div class="mission-item">
-            <div class="mission-icon">
-              <font-awesome-icon :icon="['fas', 'gamepad']" size="2x" />
-            </div>
-            <h3>精选游戏</h3>
-            <p>为玩家筛选优质游戏，提供丰富多样的选择</p>
+    <!-- 我们的使命 -->
+    <section>
+      <h2 class="text-2xl font-bold text-slate-800 mb-8 text-center">我们的使命</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md hover:border-primary-200 transition-all duration-300 text-center group">
+          <div class="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-6 text-primary-500 group-hover:scale-110 transition-transform">
+            <Gamepad2 class="w-8 h-8" />
           </div>
-          <div class="mission-item">
-            <div class="mission-icon">
-              <font-awesome-icon :icon="['fas', 'star']" size="2x" />
-            </div>
-            <h3>专业评测</h3>
-            <p>提供客观、专业的游戏评测和攻略</p>
-          </div>
-          <div class="mission-item">
-            <div class="mission-icon">
-              <font-awesome-icon :icon="['fas', 'users']" size="2x" />
-            </div>
-            <h3>玩家社区</h3>
-            <p>构建活跃的玩家社区，促进交流与分享</p>
-          </div>
-          <div class="mission-item">
-            <div class="mission-icon">
-              <font-awesome-icon :icon="['fas', 'rocket']" size="2x" />
-            </div>
-            <h3>技术创新</h3>
-            <p>持续创新，提供更好的用户体验</p>
-          </div>
+          <h3 class="text-xl font-bold text-slate-800 mb-3">精选佳作</h3>
+          <p class="text-slate-500">为您精心筛选优质Galgame，提供丰富多样的选择</p>
         </div>
-      </section>
+        
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md hover:border-primary-200 transition-all duration-300 text-center group">
+          <div class="w-16 h-16 bg-yellow-50 rounded-full flex items-center justify-center mx-auto mb-6 text-yellow-500 group-hover:scale-110 transition-transform">
+            <Star class="w-8 h-8" />
+          </div>
+          <h3 class="text-xl font-bold text-slate-800 mb-3">用心推荐</h3>
+          <p class="text-slate-500">提供真诚、用心的游戏推荐和剧情介绍</p>
+        </div>
+        
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md hover:border-primary-200 transition-all duration-300 text-center group">
+          <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-500 group-hover:scale-110 transition-transform">
+            <Users class="w-8 h-8" />
+          </div>
+          <h3 class="text-xl font-bold text-slate-800 mb-3">Galgame社区</h3>
+          <p class="text-slate-500">构建温馨的Galgame社区，促进玩家交流与分享</p>
+        </div>
+        
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md hover:border-primary-200 transition-all duration-300 text-center group">
+          <div class="w-16 h-16 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-500 group-hover:scale-110 transition-transform">
+            <Rocket class="w-8 h-8" />
+          </div>
+          <h3 class="text-xl font-bold text-slate-800 mb-3">持续优化</h3>
+          <p class="text-slate-500">持续优化平台体验，提供更美好的游戏时光</p>
+        </div>
+      </div>
+    </section>
       
-      <section class="about-section">
-        <h2>团队成员</h2>
-        <div class="team-grid">
-          <div class="team-member">
-            <div class="team-avatar">
-              <font-awesome-icon :icon="['fas', 'user-tie']" size="2x" />
-            </div>
-            <h3>张三</h3>
-            <p>创始人 & CEO</p>
+    <!-- 团队成员 -->
+    <section class="bg-slate-50 rounded-3xl p-8 md:p-12">
+      <h2 class="text-2xl font-bold text-slate-800 mb-8 text-center">团队成员</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="text-center group">
+          <div class="w-24 h-24 bg-white rounded-full mx-auto mb-4 flex items-center justify-center text-slate-400 shadow-sm group-hover:text-primary-500 group-hover:shadow-md transition-all">
+            <User class="w-10 h-10" />
           </div>
-          <div class="team-member">
-            <div class="team-avatar">
-              <font-awesome-icon :icon="['fas', 'laptop-code']" size="2x" />
-            </div>
-            <h3>李四</h3>
-            <p>技术总监</p>
-          </div>
-          <div class="team-member">
-            <div class="team-avatar">
-              <font-awesome-icon :icon="['fas', 'palette']" size="2x" />
-            </div>
-            <h3>王五</h3>
-            <p>设计总监</p>
-          </div>
-          <div class="team-member">
-            <div class="team-avatar">
-              <font-awesome-icon :icon="['fas', 'edit']" size="2x" />
-            </div>
-            <h3>赵六</h3>
-            <p>内容编辑</p>
-          </div>
+          <h3 class="font-bold text-slate-800 text-lg">张三</h3>
+          <p class="text-primary-500 text-sm font-medium mt-1">创始人 & CEO</p>
         </div>
-      </section>
+        <div class="text-center group">
+          <div class="w-24 h-24 bg-white rounded-full mx-auto mb-4 flex items-center justify-center text-slate-400 shadow-sm group-hover:text-blue-500 group-hover:shadow-md transition-all">
+            <Code2 class="w-10 h-10" />
+          </div>
+          <h3 class="font-bold text-slate-800 text-lg">李四</h3>
+          <p class="text-primary-500 text-sm font-medium mt-1">技术总监</p>
+        </div>
+        <div class="text-center group">
+          <div class="w-24 h-24 bg-white rounded-full mx-auto mb-4 flex items-center justify-center text-slate-400 shadow-sm group-hover:text-pink-500 group-hover:shadow-md transition-all">
+            <Palette class="w-10 h-10" />
+          </div>
+          <h3 class="font-bold text-slate-800 text-lg">王五</h3>
+          <p class="text-primary-500 text-sm font-medium mt-1">设计总监</p>
+        </div>
+        <div class="text-center group">
+          <div class="w-24 h-24 bg-white rounded-full mx-auto mb-4 flex items-center justify-center text-slate-400 shadow-sm group-hover:text-purple-500 group-hover:shadow-md transition-all">
+            <PenTool class="w-10 h-10" />
+          </div>
+          <h3 class="font-bold text-slate-800 text-lg">赵六</h3>
+          <p class="text-primary-500 text-sm font-medium mt-1">内容编辑</p>
+        </div>
+      </div>
+    </section>
       
-      <section class="about-section">
-        <h2>联系我们</h2>
-        <div class="contact-info">
-          <div class="contact-item">
-            <span class="contact-icon">
-              <font-awesome-icon :icon="['fas', 'envelope']" />
-            </span>
-            <span>contact@gameplatform.com</span>
+    <!-- 联系我们 -->
+    <section class="bg-white rounded-3xl shadow-sm border border-slate-100 p-8 md:p-12">
+      <h2 class="text-2xl font-bold text-slate-800 mb-8 border-l-4 border-primary-500 pl-4">联系我们</h2>
+      <div class="space-y-6">
+        <div class="flex items-center p-4 bg-slate-50 rounded-xl hover:bg-primary-50 transition-colors group">
+          <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-slate-400 mr-4 shadow-sm group-hover:text-primary-500">
+            <Mail class="w-5 h-5" />
           </div>
-          <div class="contact-item">
-            <span class="contact-icon">
-              <font-awesome-icon :icon="['fas', 'phone']" />
-            </span>
-            <span>+86 123 4567 8910</span>
-          </div>
-          <div class="contact-item">
-            <span class="contact-icon">
-              <font-awesome-icon :icon="['fas', 'map-marker-alt']" />
-            </span>
-            <span>北京市朝阳区科技园区A座1001室</span>
-          </div>
+          <span class="text-slate-600 font-medium">contact@galhub.com</span>
         </div>
-      </section>
-    </div>
+        <div class="flex items-center p-4 bg-slate-50 rounded-xl hover:bg-primary-50 transition-colors group">
+          <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-slate-400 mr-4 shadow-sm group-hover:text-primary-500">
+             <Phone class="w-5 h-5" />
+          </div>
+          <span class="text-slate-600 font-medium">+86 123 4567 8910</span>
+        </div>
+        <div class="flex items-center p-4 bg-slate-50 rounded-xl hover:bg-primary-50 transition-colors group">
+          <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-slate-400 mr-4 shadow-sm group-hover:text-primary-500">
+            <MapPin class="w-5 h-5" />
+          </div>
+          <span class="text-slate-600 font-medium">北京市朝阳区科技园区A座1001室</span>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
-
-<style scoped>
-.about-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-}
-
-.about-header {
-  text-align: center;
-  margin-bottom: 40px;
-  padding: 30px 20px;
-  background: #f8f9fa;
-  color: #333;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-.about-header h1 {
-  font-size: 2rem;
-  margin-bottom: 12px;
-  font-weight: 600;
-  color: #333;
-}
-
-.about-subtitle {
-  font-size: 1.1rem;
-  opacity: 0.8;
-  max-width: 600px;
-  margin: 0 auto;
-  color: #666;
-}
-
-.about-content {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  padding: 40px;
-}
-
-.about-section {
-  margin-bottom: 60px;
-  padding-bottom: 30px;
-  border-bottom: 1px solid #eaeaea;
-}
-
-.about-section:last-child {
-  margin-bottom: 0;
-  padding-bottom: 0;
-  border-bottom: none;
-}
-
-.about-section h2 {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 24px;
-  position: relative;
-  display: inline-block;
-}
-
-.about-section h2::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  width: 60px;
-  height: 4px;
-  background: #6c757d;
-  border-radius: 2px;
-}
-
-.about-section p {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: #666;
-  margin-bottom: 16px;
-}
-
-.mission-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 24px;
-  margin-top: 32px;
-}
-
-.mission-item {
-  text-align: center;
-  padding: 30px 20px;
-  background: #f8f9fa;
-  border-radius: 12px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.mission-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.mission-icon {
-  font-size: 3rem;
-  margin-bottom: 16px;
-}
-
-.mission-item h3 {
-  font-size: 1.3rem;
-  color: #333;
-  margin-bottom: 12px;
-}
-
-.team-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 30px;
-  margin-top: 32px;
-}
-
-.team-member {
-  text-align: center;
-}
-
-.team-avatar {
-  font-size: 2.5rem;
-  margin-bottom: 16px;
-  background: #e9ecef;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.team-member h3 {
-  font-size: 1.2rem;
-  color: #333;
-  margin-bottom: 8px;
-}
-
-.team-member p {
-  color: #666;
-  font-size: 1rem;
-  margin: 0;
-}
-
-.contact-info {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-top: 32px;
-}
-
-.contact-item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  font-size: 1.1rem;
-  color: #666;
-}
-
-.contact-icon {
-  font-size: 1.5rem;
-  width: 30px;
-  text-align: center;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .about-container {
-    padding: 20px 16px;
-  }
-  
-  .about-header {
-    padding: 40px 20px;
-    margin-bottom: 40px;
-  }
-  
-  .about-header h1 {
-    font-size: 2rem;
-  }
-  
-  .about-subtitle {
-    font-size: 1.1rem;
-  }
-  
-  .about-content {
-    padding: 24px;
-  }
-  
-  .about-section h2 {
-    font-size: 1.5rem;
-  }
-  
-  .mission-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .team-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-  
-  .team-avatar {
-    width: 100px;
-    height: 100px;
-    font-size: 3rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .about-header h1 {
-    font-size: 1.8rem;
-  }
-  
-  .about-section {
-    margin-bottom: 40px;
-  }
-  
-  .team-grid {
-    grid-template-columns: 1fr;
-  }
-}
-</style>

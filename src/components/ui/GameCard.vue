@@ -1,24 +1,53 @@
 <template>
-  <div class="game-card">
-    <div class="game-image">
-      <img :src="game.image" :alt="game.title" />
+  <div class="group bg-white rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-100 overflow-hidden flex flex-col h-full cursor-pointer" @click="selectGame">
+    <!-- 图片区域 -->
+    <div class="relative aspect-[16/9] w-full overflow-hidden">
+      <img 
+        :src="game.image" 
+        :alt="game.title" 
+        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+      <!-- 悬浮时的遮罩 (可选) -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
     </div>
-    <div class="game-info">
-      <h3 class="game-title">{{ game.title }}</h3>
-      <div class="game-meta">
-        <span class="game-genre">{{ game.genre }}</span>
-        <div class="game-rating">
-          <span class="rating-star">★</span>
-          <span class="rating-value">{{ game.rating }}</span>
+
+    <!-- 内容区域 -->
+    <div class="p-5 flex flex-col flex-1">
+      <div class="flex justify-between items-start mb-2">
+        <h3 class="text-lg font-bold text-slate-800 line-clamp-1 group-hover:text-primary-500 transition-colors">
+          {{ game.title }}
+        </h3>
+      </div>
+      
+      <!-- 标签与评分 -->
+      <div class="flex items-center justify-between mb-3">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
+          {{ game.genre }}
+        </span>
+        <div class="flex items-center text-yellow-400 font-bold text-sm">
+          <Star class="w-3.5 h-3.5 fill-current mr-1" />
+          <span>{{ game.rating }}</span>
         </div>
       </div>
-      <p class="game-description">{{ game.description }}</p>
-      <button class="game-button" @click="selectGame">了解更多</button>
+
+      <p class="text-slate-500 text-sm line-clamp-2 mb-4 flex-1 leading-relaxed">
+        {{ game.description }}
+      </p>
+
+      <!-- 底部按钮 -->
+      <div class="pt-4 border-t border-slate-50 flex justify-end">
+        <button class="text-sm font-medium text-primary-500 hover:text-primary-600 flex items-center transition-all group/btn">
+          了解更多 
+          <ArrowRight class="w-4 h-4 ml-1 transform group-hover/btn:translate-x-1 transition-transform" />
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { Star, ArrowRight } from 'lucide-vue-next';
+
 // 定义组件属性
 const props = defineProps({
   game: {
@@ -35,92 +64,3 @@ const selectGame = () => {
   emit('select', props.game);
 };
 </script>
-
-<style scoped>
-.game-card {
-  background-color: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  display: flex;
-  flex-direction: column;
-}
-
-.game-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-}
-
-.game-image {
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-}
-
-.game-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.game-card:hover .game-image img {
-  transform: scale(1.05);
-}
-
-.game-info {
-  padding: 20px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.game-title {
-  font-size: 1.3rem;
-  color: #333;
-  margin: 0 0 12px 0;
-  font-weight: 600;
-}
-
-.game-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-  font-size: 0.9rem;
-}
-
-.game-genre {
-  background-color: #e9ecef;
-  color: #495057;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-weight: 500;
-}
-
-.game-rating {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: #ffc107;
-  font-weight: 600;
-}
-
-.rating-star {
-  font-size: 1rem;
-}
-
-.game-description {
-  color: #666;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin: 0 0 20px 0;
-  flex: 1;
-}
-
-.game-button {
-  /* 复用全局按钮样式 */
-  align-self: flex-start;
-}
-</style>

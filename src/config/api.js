@@ -1,38 +1,35 @@
 // API配置
 
 export const API_CONFIG = {
-  // API基础URL
   BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api',
   
-  // API端点配置
   ENDPOINTS: {
     GAMES: '/games',
     GAME_DETAIL: (id) => `/games/${id}`,
-    CATEGORIES: '/categories',
-    SEARCH: '/search',
-    USER_LOGIN: '/auth/login',
-    USER_REGISTER: '/auth/register',
-    USER_PROFILE: '/users/profile',
-    USER_FAVORITES: '/users/favorites',
-    USER_REVIEWS: '/users/reviews'
+    GAMES_LATEST: '/games/latest',
+    GAMES_POPULAR: '/games/popular',
+    TAGS: '/tags',
+    REVIEWS: '/reviews',
+    REVIEWS_GAME: (gameId) => `/reviews/game/${gameId}`,
+    REVIEWS_USER: (userId) => `/reviews/user/${userId}`,
+    REVIEWS_DETAIL: (id) => `/reviews/${id}`,
+    REGISTER: '/register',
+    LOGIN: '/login',
+    ME: '/me'
   },
   
-  // 请求超时时间（毫秒）
   TIMEOUT: 10000,
   
-  // 重试配置
   RETRY: {
     MAX_ATTEMPTS: 3,
     DELAY: 1000
   },
   
-  // 分页配置
   PAGINATION: {
     DEFAULT_PAGE: 1,
-    DEFAULT_PAGE_SIZE: 12
+    DEFAULT_PAGE_SIZE: 20
   },
   
-  // 响应状态码
   STATUS_CODES: {
     SUCCESS: 200,
     CREATED: 201,
@@ -41,6 +38,7 @@ export const API_CONFIG = {
     UNAUTHORIZED: 401,
     FORBIDDEN: 403,
     NOT_FOUND: 404,
+    TOO_MANY_REQUESTS: 429,
     SERVER_ERROR: 500
   }
 };

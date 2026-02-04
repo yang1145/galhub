@@ -96,22 +96,25 @@ export const apiService = {
   
   // 游戏相关
   games: {
-    // 获取游戏列表
-    getGames: async () => {
-      return request('/games');
+    getGames: async (page = 1, limit = 20) => {
+      const params = new URLSearchParams({ page, limit });
+      return request(`/games?${params}`);
     },
     
-    // 获取最新游戏
-    getLatestGames: async () => {
-      return request('/games/latest');
+    getGameById: async (id) => {
+      return request(`/games/${id}`);
     },
     
-    // 获取热门游戏
-    getPopularGames: async () => {
-      return request('/games/popular');
+    getLatestGames: async (limit = 10) => {
+      const params = new URLSearchParams({ limit });
+      return request(`/games/latest?${params}`);
     },
     
-    // 创建新游戏（需要认证）
+    getPopularGames: async (limit = 10) => {
+      const params = new URLSearchParams({ limit });
+      return request(`/games/popular?${params}`);
+    },
+    
     createGame: async (gameData) => {
       return request('/games', {
         method: 'POST',
@@ -122,12 +125,10 @@ export const apiService = {
   
   // 标签相关
   tags: {
-    // 获取标签列表
     getTags: async () => {
       return request('/tags');
     },
     
-    // 创建新标签（需要认证）
     createTag: async (tagName) => {
       return request('/tags', {
         method: 'POST',
@@ -136,31 +137,32 @@ export const apiService = {
     },
   },
   
-  // 分类相关
-  categories: {
-    // 获取分类列表
-    getCategories: async () => {
-      return request('/categories');
-    },
-    
-    // 获取指定分类的游戏
-    getGamesByCategory: async (categoryId) => {
-      return request(`/categories/${categoryId}/games`);
-    },
-  },
-  
-  // 评论相关
   reviews: {
-    // 获取特定游戏的所有评论
     getGameReviews: async (gameId) => {
       return request(`/reviews/game/${gameId}`);
     },
     
-    // 创建评论（需要认证）
+    getUserReviews: async (userId) => {
+      return request(`/reviews/user/${userId}`);
+    },
+    
     createReview: async (reviewData) => {
       return request('/reviews', {
         method: 'POST',
         body: JSON.stringify(reviewData),
+      });
+    },
+    
+    updateReview: async (reviewId, reviewData) => {
+      return request(`/reviews/${reviewId}`, {
+        method: 'PUT',
+        body: JSON.stringify(reviewData),
+      });
+    },
+    
+    deleteReview: async (reviewId) => {
+      return request(`/reviews/${reviewId}`, {
+        method: 'DELETE',
       });
     },
   },
