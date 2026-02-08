@@ -116,7 +116,7 @@ const getUserInfo = async () => {
   // 处理API返回结果
   if (response.success) {
     // 处理不同的API返回格式
-    const userData = response.data ? response.data : response;
+    const userData = response.data ? response.data.user : response;
     user.value = userData;
     // 检查是否是管理员
     if (!userData || userData.role !== "admin") {

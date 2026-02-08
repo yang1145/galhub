@@ -163,7 +163,7 @@ onMounted(async () => {
       // 验证 token 并获取最新用户信息
       const userData = await apiService.auth.getCurrentUser();
       // 处理不同的API返回格式
-      const normalizedUserData = userData.data ? userData.data : userData;
+      const normalizedUserData = userData.data ? userData.data.user : userData;
       user.value = normalizedUserData;
       localStorage.setItem('user', JSON.stringify(normalizedUserData));
     }
