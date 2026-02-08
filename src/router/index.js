@@ -44,6 +44,35 @@ const routes = [
     path: '/popular',
     name: 'Popular',
     component: Home // 暂时使用Home组件，后续可以创建专门的Popular组件
+  },
+  {
+    path: '/admin',
+    name: 'AdminDashboard',
+    component: () => import('../views/admin/Dashboard.vue'),
+    meta: {
+      requiresAuth: true,
+      requiresAdmin: true
+    },
+    children: [
+      {
+        path: 'games',
+        name: 'AdminGames',
+        component: () => import('../views/admin/Games.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresAdmin: true
+        }
+      },
+      {
+        path: 'users',
+        name: 'AdminUsers',
+        component: () => import('../views/admin/Users.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresAdmin: true
+        }
+      }
+    ]
   }
 ];
 

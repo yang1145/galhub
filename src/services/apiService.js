@@ -121,6 +121,51 @@ export const apiService = {
         body: JSON.stringify(gameData),
       });
     },
+    
+    updateGame: async (id, gameData) => {
+      return request(`/games/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(gameData),
+      });
+    },
+    
+    deleteGame: async (id) => {
+      return request(`/games/${id}`, {
+        method: 'DELETE',
+      });
+    },
+  },
+  
+  // 用户相关（管理员功能）
+  users: {
+    getUsers: async (page = 1, limit = 20) => {
+      const params = new URLSearchParams({ page, limit });
+      return request(`/users?${params}`);
+    },
+    
+    getUserById: async (id) => {
+      return request(`/users/${id}`);
+    },
+    
+    createUser: async (userData) => {
+      return request('/users', {
+        method: 'POST',
+        body: JSON.stringify(userData),
+      });
+    },
+    
+    updateUser: async (id, userData) => {
+      return request(`/users/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(userData),
+      });
+    },
+    
+    deleteUser: async (id) => {
+      return request(`/users/${id}`, {
+        method: 'DELETE',
+      });
+    },
   },
   
   // 标签相关

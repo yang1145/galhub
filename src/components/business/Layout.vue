@@ -90,6 +90,11 @@ const handleLogin = async (userData) => {
     localStorage.setItem('user', JSON.stringify(response.user));
     
     closeAuthModal();
+    
+    // 检查是否是管理员，如果是则跳转到管理员dashboard
+    if (response.user && response.user.isAdmin) {
+      router.push('/admin');
+    }
   } catch (error) {
     console.error('登录失败:', error);
     authError.value = error.message || '登录失败，请检查用户名和密码';
