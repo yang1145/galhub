@@ -149,8 +149,10 @@ onMounted(async () => {
       
       // 验证 token 并获取最新用户信息
       const userData = await apiService.auth.getCurrentUser();
-      user.value = userData;
-      localStorage.setItem('user', JSON.stringify(userData));
+      // 处理不同的API返回格式
+      const normalizedUserData = userData.data ? userData.data : userData;
+      user.value = normalizedUserData;
+      localStorage.setItem('user', JSON.stringify(normalizedUserData));
     }
   } catch (error) {
     console.error('获取用户信息失败:', error);

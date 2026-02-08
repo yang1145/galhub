@@ -114,10 +114,11 @@ const reviewCount = ref(0);
 const getUserInfo = async () => {
   try {
     const response = await apiService.auth.getCurrentUser();
-    const userData = response.data;
+    // 处理不同的API返回格式
+    const userData = response.data ? response.data : response;
     user.value = userData;
     // 检查是否是管理员
-    if (!userData.isAdmin) {
+    if (!userData || !userData.isAdmin) {
       router.push('/');
     }
   } catch (error) {
