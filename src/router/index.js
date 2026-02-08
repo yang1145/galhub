@@ -71,6 +71,15 @@ const routes = [
           requiresAuth: true,
           requiresAdmin: true
         }
+      },
+      {
+        path: 'change-password',
+        name: 'AdminChangePassword',
+        component: () => import('../views/admin/ChangePassword.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresAdmin: true
+        }
       }
     ]
   }

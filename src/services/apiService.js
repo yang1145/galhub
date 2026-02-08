@@ -88,9 +88,44 @@ export const apiService = {
       return request('/me');
     },
     
+    // 修改自己的密码
+    updatePassword: async (passwordData) => {
+      return request('/me/password', {
+        method: 'PUT',
+        body: JSON.stringify(passwordData),
+      });
+    },
+    
     // 用户登出
     logout: () => {
       localStorage.removeItem('token');
+    },
+  },
+  
+  // 验证码相关
+  captcha: {
+    // 生成验证码
+    generate: async () => {
+      return request('/captcha/generate');
+    },
+    
+    // 验证验证码
+    verify: async (captchaData) => {
+      return request('/captcha/verify', {
+        method: 'POST',
+        body: JSON.stringify(captchaData),
+      });
+    },
+  },
+  
+  // 管理员相关
+  admin: {
+    // 修改用户密码
+    updateUserPassword: async (userId, passwordData) => {
+      return request(`/admin/users/${userId}/password`, {
+        method: 'PUT',
+        body: JSON.stringify(passwordData),
+      });
     },
   },
   

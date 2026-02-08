@@ -82,6 +82,12 @@
                 编辑
               </button>
               <button 
+                @click="changeUserPassword(user)" 
+                class="text-green-500 hover:text-green-700 mr-4"
+              >
+                修改密码
+              </button>
+              <button 
                 @click="deleteUser(user.id)" 
                 class="text-red-500 hover:text-red-700"
               >
@@ -199,6 +205,73 @@
         </form>
       </div>
     </div>
+    
+    <!-- 修改用户密码模态框 -->
+    <div v-if="showPasswordModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-bold text-gray-800">
+            修改用户密码
+          </h3>
+          <button @click="closePasswordModal" class="text-gray-400 hover:text-gray-600">
+            <X class="w-5 h-5" />
+          </button>
+        </div>
+        
+        <form @submit.prevent="updateUserPassword">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">用户</label>
+              <div class="px-4 py-2 bg-gray-50 rounded-lg">
+                {{ selectedUser?.username }}
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">新密码</label>
+              <input 
+                v-model="passwordForm.newPassword" 
+                type="password" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                placeholder="请输入新密码"
+                required
+              />
+              <p class="text-xs text-gray-500 mt-1">至少8个字符，必须包含字母和数字</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">确认新密码</label>
+              <input 
+                v-model="passwordForm.confirmPassword" 
+                type="password" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                placeholder="请确认新密码"
+                required
+              />
+            </div>
+          </div>
+          
+          <!-- 错误信息 -->
+          <div v-if="passwordError" class="mt-4 text-red-500 text-sm bg-red-50 p-2 rounded-lg">
+            {{ passwordError }}
+          </div>
+          
+          <div class="mt-6 flex justify-end space-x-3">
+            <button 
+              type="button" 
+              @click="closePasswordModal"
+              class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+            >
+              取消
+            </button>
+            <button 
+              type="submit" 
+              class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+            >
+              保存密码
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -220,6 +293,8 @@ const page = ref(1);
 // 模态框状态
 const showUserModal = ref(false);
 const editingUser = ref(null);
+const showPasswordModal = ref(false);
+const selectedUser = ref(null);
 
 // 用户表单
 const userForm = ref({
@@ -228,6 +303,13 @@ const userForm = ref({
   password: '',
   isAdmin: false
 });
+
+// 密码表单
+const passwordForm = ref({
+  newPassword: '',
+  confirmPassword: ''
+});
+const passwordError = ref('');
 
 // 过滤后的用户列表
 const filteredUsers = computed(() => {
@@ -290,6 +372,61 @@ const editUser = (user) => {
 const closeUserModal = () => {
   showUserModal.value = false;
   editingUser.value = null;
+};
+
+// 打开修改密码模态框
+const changeUserPassword = (user) => {
+  selectedUser.value = user;
+  passwordForm.value = {
+    newPassword: '',
+    confirmPassword: ''
+  };
+  passwordError.value = '';
+  showPasswordModal.value = true;
+};
+
+// 关闭修改密码模态框
+const closePasswordModal = () => {
+  showPasswordModal.value = false;
+  selectedUser.value = null;
+  passwordError.value = '';
+};
+
+// 更新用户密码
+const updateUserPassword = async () => {
+  try {
+    // 表单验证
+    if (!passwordForm.value.newPassword) {
+      passwordError.value = '请输入新密码';
+      return;
+    }
+    
+    if (passwordForm.value.newPassword !== passwordForm.value.confirmPassword) {
+      passwordError.value = '两次输入的密码不一致';
+      return;
+    }
+    
+    // 密码强度验证
+    if (passwordForm.value.newPassword.length < 8 || !/[a-zA-Z]/.test(passwordForm.value.newPassword) || !/[0-9]/.test(passwordForm.value.newPassword)) {
+      passwordError.value = '密码至少8个字符，必须包含字母和数字';
+      return;
+    }
+    
+    isLoading.value = true;
+    passwordError.value = '';
+    
+    await apiService.admin.updateUserPassword(selectedUser.value.id, {
+      newPassword: passwordForm.value.newPassword
+    });
+    
+    closePasswordModal();
+    // 可以添加成功提示
+  } catch (err) {
+    console.error('修改用户密码失败:', err);
+    passwordError.value = '修改密码失败，请重试';
+  } finally {
+    isLoading.value = false;
+  }
 };
 
 // 保存用户

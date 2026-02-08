@@ -28,6 +28,12 @@
               </router-link>
             </li>
             <li>
+              <router-link to="/admin/change-password" class="flex items-center p-2 rounded-lg hover:bg-gray-100 text-gray-700">
+                <Lock class="w-5 h-5 mr-2" />
+                <span>修改密码</span>
+              </router-link>
+            </li>
+            <li>
               <button @click="handleLogout" class="flex items-center p-2 rounded-lg hover:bg-gray-100 text-gray-700 w-full text-left">
                 <LogOut class="w-5 h-5 mr-2" />
                 <span>退出登录</span>
@@ -95,7 +101,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { Home, Gamepad2, Users, LogOut, Star } from 'lucide-vue-next';
+import { Home, Gamepad2, Users, LogOut, Star, Lock } from 'lucide-vue-next';
 import { apiService } from '../../services/apiService';
 
 const router = useRouter();
