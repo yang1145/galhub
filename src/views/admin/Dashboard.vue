@@ -120,6 +120,7 @@ const getUserInfo = async () => {
     user.value = userData;
     // 检查是否是管理员
     if (!userData || userData.role !== "admin") {
+      console.log('重定向原因：用户不是管理员，重定向到404页面');
       router.push({ name: 'NotFound' });
     }
   } else {

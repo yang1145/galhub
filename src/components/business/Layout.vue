@@ -89,10 +89,17 @@ const handleLogin = async (userData) => {
     localStorage.setItem('token', response.data.token);
     localStorage.setItem('user', JSON.stringify(response.data.user));
     
+    // 在浏览器控制台输出JWT信息
+    console.log('JWT令牌信息:', {
+      token: response.data.token,
+      user: response.data.user
+    });
+    
     closeAuthModal();
     
     // 检查是否是管理员，如果是则跳转到管理员dashboard
     if (response.data.user && response.data.user.role === "admin") {
+      console.log('重定向原因：管理员登录成功，重定向到管理员页面');
       router.push('/admin');
     }
   } catch (error) {
@@ -141,6 +148,12 @@ onMounted(async () => {
   try {
     const token = localStorage.getItem('token');
     if (token) {
+      // 在浏览器控制台输出JWT信息
+      console.log('从localStorage读取的JWT令牌信息:', {
+        token: token,
+        user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null
+      });
+      
       // 尝试从 localStorage 读取用户信息以快速显示
       const storedUser = localStorage.getItem('user');
       if (storedUser) {

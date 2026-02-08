@@ -103,6 +103,7 @@ router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('token');
     if (!token) {
       // 没有token，重定向到404页面
+      console.log('重定向原因：访问需要认证的路由但没有token，重定向到404页面');
       next({ name: 'NotFound' });
     } else {
       // 有token，检查是否是管理员路由
