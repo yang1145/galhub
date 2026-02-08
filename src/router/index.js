@@ -82,6 +82,12 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    // 404路由
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('../views/NotFound.vue')
   }
 ];
 
@@ -96,8 +102,8 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     const token = localStorage.getItem('token');
     if (!token) {
-      // 没有token，重定向到首页
-      next({ name: 'Home' });
+      // 没有token，重定向到404页面
+      next({ name: 'NotFound' });
     } else {
       // 有token，检查是否是管理员路由
       if (to.matched.some(record => record.meta.requiresAdmin)) {

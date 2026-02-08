@@ -120,7 +120,7 @@ const getUserInfo = async () => {
     user.value = userData;
     // 检查是否是管理员
     if (!userData || !userData.isAdmin) {
-      router.push('/');
+      router.push({ name: 'NotFound' });
     }
   } else {
     console.error('获取用户信息失败:', response.message);
