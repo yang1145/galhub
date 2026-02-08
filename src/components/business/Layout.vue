@@ -169,8 +169,8 @@ onMounted(async () => {
     }
   } catch (error) {
     console.error('获取用户信息失败:', error);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    // 只在明确的认证错误时才清除token
+    // 暂时的网络问题或服务器问题不应该导致用户被登出
   }
 });
 </script>

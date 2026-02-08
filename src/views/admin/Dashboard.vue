@@ -128,9 +128,8 @@ const getUserInfo = async () => {
     // 在生产环境中，API请求可能会失败，这时候不应该直接重定向到首页
     // 而是显示一个错误消息，让用户知道发生了什么
     user.value = null;
-    // 清除localStorage中的token，保持登录状态一致性
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    // 只在明确的认证错误时才清除token
+    // 暂时的网络问题或服务器问题不应该导致用户被登出
     // 可以在这里添加错误消息提示
   }
 };
