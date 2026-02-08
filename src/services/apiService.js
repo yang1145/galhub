@@ -39,13 +39,16 @@ async function request(endpoint, options = {}) {
     
     // 处理错误状态码
     if (!response.ok) {
-      throw new Error(data.message || `Request failed with status ${response.status}`);
+      console.error('API Request Error:', data.message || `Request failed with status ${response.status}`);
+      return { success: false, message: data.message || `Request failed with status ${response.status}` };
     }
     
     return data;
   } catch (error) {
     console.error('API Request Error:', error);
-    throw error;
+    // 在生产环境中，API请求可能会失败，这时候不应该直接抛出错误
+    // 而是返回一个错误对象，让调用方决定如何处理
+    return { success: false, message: error.message };
   }
 }
 

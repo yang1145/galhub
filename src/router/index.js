@@ -90,4 +90,27 @@ const router = createRouter({
   routes
 });
 
+// 全局导航守卫
+router.beforeEach((to, from, next) => {
+  // 检查路由是否需要认证
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // 没有token，重定向到首页
+      next({ name: 'Home' });
+    } else {
+      // 有token，检查是否是管理员路由
+      if (to.matched.some(record => record.meta.requiresAdmin)) {
+        // 这里可以添加管理员权限检查逻辑
+        // 暂时直接通过，因为Dashboard组件中已经有管理员检查
+        next();
+      } else {
+        next();
+      }
+    }
+  } else {
+    next();
+  }
+});
+
 export default router;

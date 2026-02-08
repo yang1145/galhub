@@ -112,8 +112,9 @@ const reviewCount = ref(0);
 
 // 获取用户信息
 const getUserInfo = async () => {
-  try {
-    const response = await apiService.auth.getCurrentUser();
+  const response = await apiService.auth.getCurrentUser();
+  // 处理API返回结果
+  if (response.success) {
     // 处理不同的API返回格式
     const userData = response.data ? response.data : response;
     user.value = userData;
@@ -121,9 +122,12 @@ const getUserInfo = async () => {
     if (!userData || !userData.isAdmin) {
       router.push('/');
     }
-  } catch (error) {
-    console.error('获取用户信息失败:', error);
-    router.push('/');
+  } else {
+    console.error('获取用户信息失败:', response.message);
+    // 在生产环境中，API请求可能会失败，这时候不应该直接重定向到首页
+    // 而是显示一个错误消息，让用户知道发生了什么
+    user.value = null;
+    // 可以在这里添加错误消息提示
   }
 };
 
