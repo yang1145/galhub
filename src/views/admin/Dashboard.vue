@@ -137,10 +137,13 @@ const getUserInfo = async () => {
 // 获取统计数据
 const getStats = async () => {
   try {
-    // 这里使用模拟数据，实际项目中应该调用API
-    gameCount.value = 42;
-    userCount.value = 156;
-    reviewCount.value = 234;
+    // 调用API获取统计数据
+    const response = await apiService.admin.getStats();
+    if (response.success && response.data) {
+      gameCount.value = response.data.gameCount;
+      userCount.value = response.data.userCount;
+      reviewCount.value = response.data.reviewCount;
+    }
   } catch (error) {
     console.error('获取统计数据失败:', error);
   }

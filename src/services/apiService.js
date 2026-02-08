@@ -130,6 +130,10 @@ export const apiService = {
         body: JSON.stringify(passwordData),
       });
     },
+    // 获取系统统计信息
+    getStats: async () => {
+      return request('/api/stats');
+    },
   },
   
   // 游戏相关
