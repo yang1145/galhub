@@ -119,7 +119,7 @@ const getUserInfo = async () => {
     const userData = response.data ? response.data : response;
     user.value = userData;
     // 检查是否是管理员
-    if (!userData || !userData.isAdmin) {
+    if (!userData || userData.role !== "admin") {
       router.push({ name: 'NotFound' });
     }
   } else {
@@ -127,6 +127,9 @@ const getUserInfo = async () => {
     // 在生产环境中，API请求可能会失败，这时候不应该直接重定向到首页
     // 而是显示一个错误消息，让用户知道发生了什么
     user.value = null;
+    // 清除localStorage中的token，保持登录状态一致性
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     // 可以在这里添加错误消息提示
   }
 };

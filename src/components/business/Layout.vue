@@ -92,7 +92,7 @@ const handleLogin = async (userData) => {
     closeAuthModal();
     
     // 检查是否是管理员，如果是则跳转到管理员dashboard
-    if (response.user && response.user.isAdmin) {
+    if (response.data.user && response.data.user.role === "admin") {
       router.push('/admin');
     }
   } catch (error) {
