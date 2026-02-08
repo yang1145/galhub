@@ -85,9 +85,9 @@ const handleLogin = async (userData) => {
     authError.value = '';
     
     const response = await apiService.auth.login(userData);
-    user.value = response.user;
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
+    user.value = response.data.user;
+    localStorage.setItem('token', response.data.token);
+    localStorage.setItem('user', JSON.stringify(response.data.user));
     
     closeAuthModal();
     

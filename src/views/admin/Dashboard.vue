@@ -113,7 +113,8 @@ const reviewCount = ref(0);
 // 获取用户信息
 const getUserInfo = async () => {
   try {
-    const userData = await apiService.auth.getCurrentUser();
+    const response = await apiService.auth.getCurrentUser();
+    const userData = response.data;
     user.value = userData;
     // 检查是否是管理员
     if (!userData.isAdmin) {
