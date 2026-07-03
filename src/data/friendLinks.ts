@@ -1,0 +1,6 @@
+export const friendLinks = [
+  { name: 'Visual Novel Database', description: '视觉小说条目资料库', url: 'https://vndb.org/', favicon: 'https://www.google.com/s2/favicons?domain=vndb.org&sz=64' },
+  { name: 'Steam', description: 'PC 游戏发行平台', url: 'https://store.steampowered.com/', favicon: 'https://www.google.com/s2/favicons?domain=store.steampowered.com&sz=64' },
+  { name: 'itch.io', description: '独立游戏与实验作品平台', url: 'https://itch.io/', favicon: 'https://www.google.com/s2/favicons?domain=itch.io&sz=64' },
+  { name: 'Bangumi', description: '中文 ACG 条目与收藏社区', url: 'https://bgm.tv/', favicon: 'https://www.google.com/s2/favicons?domain=bgm.tv&sz=64' },
+];

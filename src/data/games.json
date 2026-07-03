@@ -1,0 +1,91 @@
+{
+  "lastUpdated": "2026-07-03",
+  "games": [
+    {
+      "id": "summer-pocket",
+      "title": "Summer Pockets",
+      "titleZh": "夏日口袋",
+      "developer": "Key",
+      "publisher": "Visual Arts",
+      "releaseDate": "2018-06-29",
+      "platform": ["PC", "Switch", "Android", "iOS"],
+      "rating": 8.7,
+      "coverImage": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=anime%20visual%20novel%20game%20cover%2C%20quiet%20summer%20island%2C%20blue%20sea%2C%20girl%20standing%20near%20old%20harbor%2C%20premium%20illustration%2C%20detailed%20background%2C%20soft%20cinematic%20lighting&image_size=landscape_16_9",
+      "coverLink": "https://key.visualarts.gr.jp/summer/",
+      "screenshots": [
+        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=visual%20novel%20screenshot%2C%20summer%20island%20classroom%2C%20warm%20sunlight%2C%20anime%20background%20art%2C%20clean%20UI%20hidden%2C%20high%20detail&image_size=landscape_16_9",
+        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=visual%20novel%20screenshot%2C%20seaside%20path%20at%20sunset%2C%20anime%20background%2C%20nostalgic%20summer%20mood%2C%20detailed%20environment&image_size=landscape_16_9"
+      ],
+      "tags": ["视觉小说", "恋爱", "夏日", "治愈"],
+      "description": "少年在远离都市的海岛上度过一个短暂夏天，和岛上的少女们相遇，逐渐触碰被时间封存的记忆。",
+      "buttons": [
+        { "type": "download", "label": "跳转下载", "url": "https://example.com/download/summer-pocket" },
+        { "type": "website", "label": "前往官网", "url": "https://key.visualarts.gr.jp/summer/" }
+      ]
+    },
+    {
+      "id": "steins-gate",
+      "title": "Steins;Gate",
+      "titleZh": "命运石之门",
+      "developer": "5pb. / Nitroplus",
+      "publisher": "MAGES.",
+      "releaseDate": "2009-10-15",
+      "platform": ["PC", "Switch", "PS5", "Android", "iOS"],
+      "rating": 9.2,
+      "coverImage": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=science%20fiction%20visual%20novel%20cover%2C%20akihabara%20laboratory%2C%20time%20machine%20motif%2C%20fragmented%20clock%20faces%2C%20anime%20key%20art%2C%20cinematic%20detail&image_size=landscape_16_9",
+      "coverLink": "https://steinsgate.jp/",
+      "screenshots": [
+        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=visual%20novel%20screenshot%2C%20small%20akihabara%20lab%2C%20retro%20computers%2C%20messy%20desk%2C%20cinematic%20anime%20background&image_size=landscape_16_9",
+        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=visual%20novel%20screenshot%2C%20rainy%20tokyo%20street%20night%2C%20neon%20signs%20subtle%2C%20sci%20fi%20mystery%20mood&image_size=landscape_16_9"
+      ],
+      "tags": ["视觉小说", "科幻", "时间旅行", "悬疑"],
+      "description": "秋叶原的大学生们偶然发明出能向过去发送邮件的装置，由此卷入跨越世界线的阴谋。",
+      "buttons": [
+        { "type": "website", "label": "前往官网", "url": "https://steinsgate.jp/" },
+        { "type": "play", "label": "开始游戏", "url": "https://example.com/play/steins-gate" }
+      ]
+    },
+    {
+      "id": "aokana",
+      "title": "Aokana: Four Rhythms Across the Blue",
+      "titleZh": "苍之彼方的四重奏",
+      "developer": "sprite",
+      "publisher": "NekoNyan",
+      "releaseDate": "2014-11-28",
+      "platform": ["PC", "Switch", "PS5"],
+      "rating": 8.5,
+      "coverImage": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=anime%20visual%20novel%20cover%2C%20flying%20sports%20over%20blue%20ocean%2C%20school%20uniform%20characters%2C%20clear%20sky%2C%20dynamic%20composition%2C%20premium%20game%20key%20visual&image_size=landscape_16_9",
+      "screenshots": [
+        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=visual%20novel%20screenshot%2C%20coastal%20school%20rooftop%2C%20blue%20sky%2C%20anime%20background%2C%20sporty%20youthful%20mood&image_size=landscape_16_9",
+        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=visual%20novel%20screenshot%2C%20ocean%20stadium%20for%20flying%20sport%2C%20bright%20daylight%2C%20anime%20background%20art&image_size=landscape_16_9"
+      ],
+      "tags": ["视觉小说", "运动", "校园", "恋爱"],
+      "description": "在反重力鞋成为日常的世界里，少年少女们围绕飞翔竞技展开青春、训练与恋爱的故事。",
+      "buttons": [
+        { "type": "download", "label": "跳转下载", "url": "https://example.com/download/aokana" },
+        { "type": "website", "label": "前往官网", "url": "https://aokana.net/" },
+        { "type": "play", "label": "开始游戏", "url": "https://example.com/play/aokana" }
+      ]
+    },
+    {
+      "id": "white-album-2",
+      "title": "WHITE ALBUM 2",
+      "titleZh": "白色相簿2",
+      "developer": "Leaf",
+      "publisher": "AQUAPLUS",
+      "releaseDate": "2010-03-26",
+      "platform": ["PC", "PS5"],
+      "rating": 9.0,
+      "coverImage": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=dramatic%20winter%20visual%20novel%20cover%2C%20music%20club%2C%20snow%20falling%2C%20piano%20and%20guitar%2C%20anime%20key%20art%2C%20melancholic%20cinematic%20lighting&image_size=landscape_16_9",
+      "screenshots": [
+        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=visual%20novel%20screenshot%2C%20quiet%20music%20room%20with%20piano%2C%20winter%20afternoon%2C%20anime%20background%20art&image_size=landscape_16_9",
+        "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=visual%20novel%20screenshot%2C%20snowy%20school%20gate%20at%20night%2C%20soft%20streetlights%2C%20melancholy%20anime%20background&image_size=landscape_16_9"
+      ],
+      "tags": ["视觉小说", "音乐", "恋爱", "冬日"],
+      "description": "文化祭前夕，轻音乐同好会的三人因音乐相遇，也在漫长冬天里走向无法轻易回头的关系。",
+      "buttons": [
+        { "type": "download", "label": "跳转下载", "url": "https://example.com/download/white-album-2" }
+      ]
+    }
+  ]
+}
