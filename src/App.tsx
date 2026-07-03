@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import data from './data/games.json';
+import gamesData from './data/games.json';
+import rankingsData from './data/rankings.json';
 import { Lightbox } from './components/Lightbox';
 import { Topbar } from './components/Topbar';
 import { DisclaimerPage } from './pages/DisclaimerPage';
@@ -7,11 +8,12 @@ import { GameDetailPage } from './pages/GameDetailPage';
 import { GameListPage } from './pages/GameListPage';
 import { HomePage } from './pages/HomePage';
 import { LinksPage } from './pages/LinksPage';
-import type { Game, GameData } from './types/game';
+import type { Game, GameData, RankingsData } from './types/game';
 import { filterGames, getGameTags, getRelatedGames } from './utils/games';
 import { getCurrentGameFromHash, getInitialPage, pageHashes, type Page } from './utils/routes';
 
-const gameData = data as GameData;
+const gameData = gamesData as GameData;
+const rankingData = rankingsData as RankingsData;
 
 const pageSeo: Record<Page, { title: string; description: string }> = {
   home: {
@@ -140,6 +142,7 @@ export default function App() {
       ) : (
         <HomePage
           games={gameData.games}
+          rankings={rankingData.rankings}
           onOpenGame={openGame}
           onOpenList={() => goList()}
         />

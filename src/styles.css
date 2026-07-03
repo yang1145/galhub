@@ -427,6 +427,8 @@ img {
 
 .popular-section,
 .featured-section,
+.home-discovery,
+.ranking-section,
 .list-header,
 .content-page {
   width: min(1400px, 100%);
@@ -455,6 +457,111 @@ img {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
+}
+
+.discovery-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 18px;
+}
+
+.discovery-panel {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 24px;
+  background: rgba(244, 241, 234, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 24px 56px rgba(0,0,0,0.18);
+}
+
+.discovery-panel h3 {
+  margin: 0 0 18px;
+  font-size: 24px;
+}
+
+.home-chip-cloud,
+.platform-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.home-chip-cloud button,
+.platform-list button {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 9px 13px;
+  color: #f4f1ea;
+  background: rgba(244, 241, 234, 0.07);
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.home-chip-cloud button:hover,
+.platform-list button:hover {
+  color: var(--ink);
+  background: var(--accent);
+}
+
+.ranking-list {
+  display: grid;
+  gap: 10px;
+}
+
+.ranking-item {
+  display: grid;
+  grid-template-columns: 48px 112px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  color: #f4f1ea;
+  background: rgba(244, 241, 234, 0.07);
+  text-align: left;
+  transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
+}
+
+.ranking-item:hover {
+  transform: translateY(-3px);
+  border-color: rgba(215, 168, 79, 0.52);
+  background: rgba(244, 241, 234, 0.1);
+}
+
+.ranking-item > span,
+.ranking-item em {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+}
+
+.ranking-item > span {
+  color: var(--accent);
+  font-size: 22px;
+}
+
+.ranking-item img {
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.ranking-item strong,
+.ranking-item small {
+  display: block;
+}
+
+.ranking-item strong {
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.ranking-item small {
+  margin-top: 4px;
+  color: var(--muted);
+}
+
+.ranking-item em {
+  color: var(--accent);
+  font-size: 24px;
+  font-style: normal;
 }
 
 .popular-carousel {
@@ -1067,6 +1174,7 @@ img {
   .hero-section,
   .control-deck,
   .featured-grid,
+  .discovery-grid,
   .detail-hero,
   .meta-grid,
   .screenshot-strip {
@@ -1171,6 +1279,37 @@ img {
   .game-grid,
   .related-grid {
     grid-template-columns: 1fr;
+  }
+
+  .discovery-panel {
+    padding: 18px;
+  }
+
+  .ranking-item {
+    grid-template-columns: 34px 84px 1fr auto;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .ranking-item > span {
+    font-size: 18px;
+  }
+
+  .ranking-item strong {
+    overflow: hidden;
+    font-size: 16px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .ranking-item small {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .ranking-item em {
+    font-size: 18px;
   }
 
   .popular-carousel {

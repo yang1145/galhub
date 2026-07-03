@@ -1,0 +1,33 @@
+{
+  "lastUpdated": "2026-07-03",
+  "rankings": [
+    {
+      "id": "top-rated",
+      "title": "高分榜",
+      "titleEn": "Top Rated",
+      "description": "社区评分最高的作品",
+      "gameIds": ["steins-gate", "white-album-2", "summer-pocket", "aokana"]
+    },
+    {
+      "id": "most-popular",
+      "title": "最热门",
+      "titleEn": "Most Popular",
+      "description": "当前最受关注的作品",
+      "gameIds": ["steins-gate", "summer-pocket", "aokana", "white-album-2"]
+    },
+    {
+      "id": "new-arrivals",
+      "title": "最新收录",
+      "titleEn": "New Arrivals",
+      "description": "近期新加入的游戏",
+      "gameIds": ["summer-pocket", "steins-gate", "aokana"]
+    },
+    {
+      "id": "editors-pick",
+      "title": "编辑推荐",
+      "titleEn": "Editor's Pick",
+      "description": "编辑部精选推荐",
+      "gameIds": ["steins-gate", "summer-pocket", "white-album-2"]
+    }
+  ]
+}

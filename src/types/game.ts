@@ -27,3 +27,28 @@ export interface GameData {
   games: Game[];
   lastUpdated: string;
 }
+
+export interface Ranking {
+  id: string;
+  title: string;
+  titleEn: string;
+  description: string;
+  gameIds: string[];
+}
+
+export interface RankingsData {
+  rankings: Ranking[];
+  lastUpdated: string;
+}
+
+export interface FriendLink {
+  name: string;
+  description: string;
+  url: string;
+  favicon: string;
+}
+
+export interface FriendLinksData {
+  links: FriendLink[];
+  lastUpdated: string;
+}
