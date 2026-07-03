@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import data from './data/games.json';
 import { Lightbox } from './components/Lightbox';
 import { Topbar } from './components/Topbar';
@@ -13,6 +13,38 @@ import { getCurrentGameFromHash, getInitialPage, pageHashes, type Page } from '.
 
 const gameData = data as GameData;
 
+const pageSeo: Record<Page, { title: string; description: string }> = {
+  home: {
+    title: 'GalHub - 静态游戏列表网站',
+    description: 'GalHub 是一个基于本地 JSON 数据构建的纯静态游戏列表网站。',
+  },
+  list: {
+    title: '游戏列表 - GalHub',
+    description: '浏览 GalHub 收录的游戏，支持按名称、开发商、发行商和标签筛选。',
+  },
+  disclaimer: {
+    title: '免责声明 - GalHub',
+    description: '查看 GalHub 关于内容来源、外部链接、版权归属和使用风险的免责声明。',
+  },
+  links: {
+    title: '友情链接 - GalHub',
+    description: '查看 GalHub 推荐的游戏资料库、发行平台和相关站点。',
+  },
+};
+
+function setMeta(name: string, content: string, property = false) {
+  const selector = property ? `meta[property="${name}"]` : `meta[name="${name}"]`;
+  let element = document.head.querySelector<HTMLMetaElement>(selector);
+
+  if (!element) {
+    element = document.createElement('meta');
+    element.setAttribute(property ? 'property' : 'name', name);
+    document.head.appendChild(element);
+  }
+
+  element.content = content;
+}
+
 export default function App() {
   const [page, setPage] = useState<Page>(() => getInitialPage());
   const [query, setQuery] = useState('');
@@ -23,6 +55,26 @@ export default function App() {
   const tags = useMemo(() => getGameTags(gameData.games), []);
   const filteredGames = useMemo(() => filterGames(gameData.games, query, activeTag), [activeTag, query]);
   const relatedGames = useMemo(() => getRelatedGames(gameData.games, selectedGame), [selectedGame]);
+
+  useEffect(() => {
+    const seo = selectedGame
+      ? {
+        title: `${selectedGame.titleZh ?? selectedGame.title} - GalHub`,
+        description: selectedGame.description,
+        image: selectedGame.coverImage,
+      }
+      : { ...pageSeo[page], image: gameData.games[0]?.coverImage };
+
+    document.title = seo.title;
+    setMeta('description', seo.description);
+    setMeta('og:title', seo.title, true);
+    setMeta('og:description', seo.description, true);
+    setMeta('twitter:title', seo.title);
+    setMeta('twitter:description', seo.description);
+    if (seo.image) {
+      setMeta('og:image', seo.image, true);
+    }
+  }, [page, selectedGame]);
 
   function openGame(game: Game) {
     window.location.hash = `/game/${game.id}`;
@@ -88,8 +140,6 @@ export default function App() {
       ) : (
         <HomePage
           games={gameData.games}
-          total={gameData.games.length}
-          tags={tags}
           onOpenGame={openGame}
           onOpenList={() => goList()}
         />

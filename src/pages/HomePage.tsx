@@ -1,43 +1,69 @@
+import { CaretLeft, CaretRight } from '@phosphor-icons/react';
+import { useState } from 'react';
 import { GameCard } from '../components/GameCard';
 import type { Game } from '../types/game';
 
 interface HomePageProps {
   games: Game[];
-  total: number;
-  tags: string[];
   onOpenGame: (game: Game) => void;
   onOpenList: () => void;
 }
 
-export function HomePage({ games, total, tags, onOpenGame, onOpenList }: HomePageProps) {
+export function HomePage({ games, onOpenGame, onOpenList }: HomePageProps) {
   const featuredGames = games.slice(0, 3);
+  const popularGames = [...games].sort((a, b) => b.rating - a.rating).slice(0, 6);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const activeGame = popularGames[activeSlide] ?? popularGames[0];
+
+  function goToPreviousSlide() {
+    setActiveSlide((current) => (current - 1 + popularGames.length) % popularGames.length);
+  }
+
+  function goToNextSlide() {
+    setActiveSlide((current) => (current + 1) % popularGames.length);
+  }
 
   return (
     <>
       <section className="hero-section">
-        <div className="hero-copy">
-          <p className="eyebrow">JSON driven static catalogue</p>
-          <h1>把游戏目录发布成一个无需后端的网站。</h1>
-          <p>
-            每次构建读取本地游戏 JSON，生成可部署到静态托管平台的前端页面。浏览、筛选、详情与外部跳转都在客户端完成。
-          </p>
-          <div className="hero-actions">
-            <button className="primary-cta" onClick={onOpenList}>查看游戏列表</button>
+        {activeGame && (
+          <div className="hero-carousel" aria-label="最热门游戏轮播">
+            {popularGames.map((game, index) => (
+              <button
+                key={game.id}
+                className={index === activeSlide ? 'hero-slide active' : 'hero-slide'}
+                onClick={() => onOpenGame(game)}
+                aria-hidden={index !== activeSlide}
+                tabIndex={index === activeSlide ? 0 : -1}
+              >
+                <img src={game.coverImage} alt={`${game.title} 封面`} />
+                <div>
+                  <span>最热门 #{index + 1}</span>
+                  <strong>{game.titleZh ?? game.title}</strong>
+                  <small>{game.rating.toFixed(1)} / {game.developer}</small>
+                </div>
+              </button>
+            ))}
+            <button className="carousel-arrow carousel-prev" onClick={goToPreviousSlide} aria-label="上一张">
+              <CaretLeft size={24} weight="bold" />
+            </button>
+            <button className="carousel-arrow carousel-next" onClick={goToNextSlide} aria-label="下一张">
+              <CaretRight size={24} weight="bold" />
+            </button>
+            <div className="carousel-dots" aria-label="轮播分页">
+              {popularGames.map((game, index) => (
+                <button
+                  key={game.id}
+                  className={index === activeSlide ? 'active' : ''}
+                  onClick={() => setActiveSlide(index)}
+                  aria-label={`切换到 ${game.title}`}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="hero-panel">
-          <div>
-            <span>总游戏数</span>
-            <strong>{total}</strong>
-          </div>
-          <div>
-            <span>精选展示</span>
-            <strong>{featuredGames.length}</strong>
-          </div>
-          <div>
-            <span>标签数量</span>
-            <strong>{tags.length - 1}</strong>
-          </div>
+        )}
+        <div className="hero-list-entry">
+          <button className="primary-cta" onClick={onOpenList}>查看游戏列表</button>
         </div>
       </section>
 
