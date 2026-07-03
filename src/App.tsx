@@ -17,8 +17,8 @@ const rankingData = rankingsData as RankingsData;
 
 const pageSeo: Record<Page, { title: string; description: string }> = {
   home: {
-    title: 'GalHub - 静态游戏列表网站',
-    description: 'GalHub 是一个基于本地 JSON 数据构建的纯静态游戏列表网站。',
+    title: 'GalHub - 视觉小说 & Galgame 收录平台',
+    description: 'GalHub 收录海量视觉小说与 Galgame 作品，提供游戏详情、评分、标签等全方位信息，助你发现下一部心头好。',
   },
   list: {
     title: '游戏列表 - GalHub',
